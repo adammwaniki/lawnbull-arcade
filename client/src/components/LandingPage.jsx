@@ -1,11 +1,11 @@
-import ParticlesBackground from "./ParticlesBackground"
+import { ParticlesBackground } from "./ParticlesBackground"
 
 export default function LandingPage() {
     return (
-      <div className="relative flex items-center justify-center min-h-screen min-w-full bg-sky-950">
+      <div className="flex items-center justify-center min-h-screen min-w-full ">
         <ParticlesBackground />
         <div className="lawnbull-intro z-10">
-          <h1 className="text-[6rem] text-white text-center font-wunderbar drop-shadow-lg">
+          <h1 className="text-[6rem] lg:text-[10vw] text-white text-center font-wunderbar ">
             Lawnbull Arcade
           </h1>
         </div>
