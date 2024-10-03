@@ -10,22 +10,14 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const loadData = async () => {
-      try {
-        // To be replaced with actual data loading logic once API is done
-        await fetch('https://api.example.com/initial-data');
-        
-        // Space for more async opertions
-        
-        setIsLoading(false);
-      } catch (error) {
-        console.error('Error loading data:', error);
-        setIsLoading(false);
-      }
-    };
-
-    loadData();
-  }, []);
+    // Simulate loading time or use actual loading logic
+    const timer = setTimeout(() => {
+    setIsLoading(false);
+    }, 5000); // Adjust time as needed
+    
+    
+    return () => clearTimeout(timer);
+    }, []);
 
   if (isLoading) {
     return <LoadingPage isLoading={isLoading} />;
