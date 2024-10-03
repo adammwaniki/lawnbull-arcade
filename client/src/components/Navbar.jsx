@@ -1,7 +1,7 @@
 
 export default function Navbar() {
   return (
-    <div className="flex w-fit lg:h-fit p-2 bg-gray-200 text-lg lg:text-[3.5vh] lg:leading-tight">
+    <div className="flex w-fit lg:h-fit p-2 bg-gray-200 text-lg lg:text-[3.5vh] lg:leading-tight font-spicy-rice ">
       <aside>
         
 

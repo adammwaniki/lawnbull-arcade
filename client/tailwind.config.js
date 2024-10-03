@@ -8,6 +8,8 @@ export default {
     extend: {
       fontFamily: {
         'wunderbar': ['wunderbar'],
+        'spicy-rice': ['Spicy Rice'],
+
       }
     },
   },
