@@ -1,6 +1,10 @@
+import Navbar from "./Navbar"
 
 export default function AboutPage() {
   return (
-    <div>AboutPage</div>
+    <div>
+      AboutPage
+      <Navbar />
+    </div>
   )
 }
