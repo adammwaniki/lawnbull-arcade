@@ -64,8 +64,8 @@ export const ParticlesBackground = () => {
         detectsOn: "window",
         events: {
           onClick: {
-            enable: false,
-            mode: []
+            enable: true,
+            mode: "push",
           },
           onDiv: {
             selectors: [],
@@ -318,7 +318,7 @@ export const ParticlesBackground = () => {
           },
           limit: {
             mode: "delete",
-            value: 0
+            value: 50
           },
           value: 30
         },
