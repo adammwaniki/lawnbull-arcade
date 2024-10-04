@@ -85,16 +85,16 @@ export default function LoadingPage({ isLoading }) {
             sync: false
           },
           random: true,
-          value: { min: 0.1, max: 1 }
+          value: { min: 0.5, max: 3 }
         }
       },
       polygon: {
         draw: {
           enable: true,
           stroke: {
-            color: "#fff",
-            width: 0.3,
-            opacity: 0.2
+            color: "#000000",
+            width: 0.8,
+            opacity: 0.4
           }
         },
         move: {
@@ -118,7 +118,7 @@ export default function LoadingPage({ isLoading }) {
       left: 0,
       width: "100%",
       height: "100vh",
-      backgroundColor: "#17163e",
+      backgroundColor: "#fffff0",
       transition: "opacity 0.5s ease-in-out",
       opacity: isLoading ? 1 : 0,
       pointerEvents: isLoading ? "auto" : "none",
@@ -136,7 +136,7 @@ export default function LoadingPage({ isLoading }) {
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        color: "#fff",
+        color: "#0d0d0d",
         fontSize: "24px",
         zIndex: 1
       }}>

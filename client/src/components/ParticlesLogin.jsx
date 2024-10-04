@@ -21,7 +21,7 @@ export const ParticlesLogin = () => {
     () => ({
       fpsLimit: 60,
       background: {
-        color: "#17163e"
+        color: "#fffff0"
       },
       interactivity: {
         detect_on: "window",
@@ -54,7 +54,7 @@ export const ParticlesLogin = () => {
       },
       particles: {
         color: {
-          value: "#ffffff"
+          value: "#17163e"
         },
         move: {
           direction: "none",

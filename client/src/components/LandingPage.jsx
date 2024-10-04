@@ -9,7 +9,7 @@ export default function LandingPage() {
         <div className=" flex flex-col ">
           <ParticlesBackground />
           <div className=" lawnbull-intro z-10">
-            <h1 className="text-[6rem] lg:text-[10vw] text-white text-center font-wunderbar ">
+            <h1 className="text-[6rem] lg:text-[10vw] text-center font-wunderbar  ">
               Lawnbull Limited
             </h1>
           </div>

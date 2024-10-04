@@ -32,7 +32,7 @@ export default function MarketingPage() {
   };
 
   return (
-    <div className="fixed inset-0 overflow-hidden bg-white">
+    <div className="fixed inset-0 overflow-hidden bg-[#fffff0]">
       <div className="absolute inset-0 z-0">
         <Lottie 
           animationData={onlineMarketingAnimation} 

@@ -50,7 +50,7 @@ export default function AdminLogin() {
       <div className="w-full md:w-1/3 md:absolute md:right-0 flex justify-center md:justify-end">
         <Navbar />
       </div>
-      <main className="bg-black bg-opacity-80 p-8 rounded-lg shadow-lg z-10 relative mt-16 md:mt-0">
+      <main className="bg-[#17163e] bg-opacity-80 p-8 rounded-lg shadow-lg z-10 relative mt-16 md:mt-0">
         <h2 className="text-2xl font-bold text-white text-center mb-6">Login</h2>
         <form className="space-y-6" onSubmit={handleLogin}>
           <div>
