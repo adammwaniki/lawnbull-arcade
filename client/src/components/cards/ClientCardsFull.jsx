@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 export default function ClientCardsFull({ image, title, subtitle, paragraphs, additionalImages, onClose }) {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50" onClick={onClose}>
-      <div className="bg-gray-100 bg-opacity-80 p-8 rounded-lg shadow-lg w-full h-full md:w-4/5 md:h-4/5 overflow-y-auto relative" onClick={(e) => e.stopPropagation()}>
+      <div className="bg-[#17163e] bg-opacity-80 p-8 rounded-lg shadow-lg w-full h-full md:w-4/5 md:h-4/5 overflow-y-auto relative" onClick={(e) => e.stopPropagation()}>
         <button 
           onClick={onClose}
           className="absolute top-4 right-4 bg-red-500 text-white w-10 h-10 flex items-center justify-center rounded-2xl hover:bg-red-600 focus:outline-none"
@@ -13,11 +13,11 @@ export default function ClientCardsFull({ image, title, subtitle, paragraphs, ad
           </svg>
         </button>
         <img src={image} alt={title} className="w-full h-64 object-cover rounded-md mb-6" />
-        <h1 className="text-3xl font-bold text-[#40240B] mb-2">{title}</h1>
-        <h2 className="text-xl text-[#40240B] mb-4">{subtitle}</h2>
+        <h1 className="text-3xl font-bold text-[#fff] mb-2">{title}</h1>
+        <h2 className="text-xl text-[#fff] mb-4">{subtitle}</h2>
         <div className="prose prose-invert max-w-none mb-6">
           {paragraphs.map((paragraph, index) => (
-            <p key={index} className="mb-4">{paragraph}</p>
+            <p key={index} className="mb-4 text-[#fff]">{paragraph}</p>
           ))}
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
