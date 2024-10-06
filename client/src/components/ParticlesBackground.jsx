@@ -166,7 +166,7 @@ export const ParticlesBackground = () => {
                   value: "#fff"
                 },
                 stop: {
-                  value: "fff"
+                  value: "#fff"
                 }
               },
               radius: 100
