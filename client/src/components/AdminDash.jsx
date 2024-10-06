@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ClientCardsMini from './cards/ClientCardsMini';
 import ClientCardsFull from './cards/ClientCardsFull';
-import { AuthContext } from '../context/AuthContext'; // Assume you have an AuthContext
+//import { AuthContext } from '../context/AuthContext'; // Assume you have an AuthContext
 
 export default function AdminDash() {
     const [cards, setCards] = useState([]);
