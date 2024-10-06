@@ -6,6 +6,7 @@ import MarketingPage from "./components/MarketingPage"
 import LoadingPage from "./components/LoadingPage"
 import AdminLogin from './components/AdminLogin'
 import Footer from './components/Footer'
+import AdminDash from './components/AdminDash'
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -33,6 +34,7 @@ export default function App() {
             <Route path="/about" element={<About />} />
             <Route path="/marketing" element={<MarketingPage />} />
             <Route path="/login" element={<AdminLogin />} />
+            <Route path="/admin/dashboard" element={<AdminDash />} />
           </Routes>
         </div>
       </Router>
