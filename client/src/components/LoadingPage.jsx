@@ -118,7 +118,7 @@ export default function LoadingPage({ isLoading }) {
       left: 0,
       width: "100%",
       height: "100vh",
-      backgroundColor: "#fffff0",
+      backgroundColor: "#ffffff",
       transition: "opacity 0.5s ease-in-out",
       opacity: isLoading ? 1 : 0,
       pointerEvents: isLoading ? "auto" : "none",

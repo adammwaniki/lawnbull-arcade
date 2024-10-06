@@ -32,7 +32,7 @@ export const ParticlesBackground = () => {
       autoPlay: true,
       background: {
         color: {
-          value: "#fffff0"
+          value: "#ffffff"
         },
         image: "",
         position: "",

@@ -21,7 +21,7 @@ export const ParticlesLogin = () => {
     () => ({
       fpsLimit: 60,
       background: {
-        color: "#fffff0"
+        color: "#ffffff"
       },
       interactivity: {
         detect_on: "window",
