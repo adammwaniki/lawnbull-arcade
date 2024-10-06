@@ -5,6 +5,7 @@ import About from "./components/AboutPage"
 import MarketingPage from "./components/MarketingPage"
 import LoadingPage from "./components/LoadingPage"
 import AdminLogin from './components/AdminLogin'
+import Footer from './components/Footer'
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -24,15 +25,18 @@ export default function App() {
   }
 
   return (
-    <Router>
-      <div className="App">
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/marketing" element={<MarketingPage />} />
-          <Route path="/login" element={<AdminLogin />} />
-        </Routes>
-      </div>
-    </Router>
+    <>
+      <Router>
+        <div className="App">
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/marketing" element={<MarketingPage />} />
+            <Route path="/login" element={<AdminLogin />} />
+          </Routes>
+        </div>
+      </Router>
+      <Footer />
+    </>
   )
 }
