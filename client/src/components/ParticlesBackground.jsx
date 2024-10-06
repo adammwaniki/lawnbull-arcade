@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
-// import { loadAll } from "@tsparticles/all"; // if you are going to use `loadAll`, install the "@tsparticles/all" package too.
+import { loadAll } from "@tsparticles/all"; // if you are going to use `loadAll`, install the "@tsparticles/all" package too.
 // import { loadFull } from "tsparticles"; // if you are going to use `loadFull`, install the "tsparticles" package too.
-import { loadSlim } from "@tsparticles/slim"; // if you are going to use `loadSlim`, install the "@tsparticles/slim" package too.
+// import { loadSlim } from "@tsparticles/slim"; // if you are going to use `loadSlim`, install the "@tsparticles/slim" package too.
 // import { loadBasic } from "@tsparticles/basic"; // if you are going to use `loadBasic`, install the "@tsparticles/basic" package too.
 
 export const ParticlesBackground = () => {
@@ -14,9 +14,9 @@ export const ParticlesBackground = () => {
       // you can initiate the tsParticles instance (engine) here, adding custom shapes or presets
       // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
       // starting from v2 you can add only the features you need reducing the bundle size
-      //await loadAll(engine);
+      await loadAll(engine);
       //await loadFull(engine);
-      await loadSlim(engine);
+      //await loadSlim(engine);
       //await loadBasic(engine);
     }).then(() => {
       setInit(true);
@@ -163,17 +163,17 @@ export const ParticlesBackground = () => {
             area: {
               gradient: {
                 start: {
-                  value: "3b5e98"
+                  value: "#d4cb92"
                 },
                 stop: {
-                  value: "#17163e"
+                  value: "fdb813"
                 }
               },
-              radius: 1000
+              radius: 100
             },
             shadow: {
               color: {
-                value: "#17163e"
+                value: "#a6a5a4"
               },
               length: 2000
             }
@@ -351,15 +351,23 @@ export const ParticlesBackground = () => {
         shape: {
           close: true,
           fill: true,
-          options: {},
+          options: {
+            character: {
+              value: ["marketing", "adverts"], // the text to use as particles, any string is valid, for escaping unicode char use the `\uXXXX` syntax
+              font: "Verdana", // the font to use to draw the text. If the font needs an external css or javascript like FontAwesome you should include all the necessary files on your own
+              style: "", // any additional css style to add to the text
+              weight: "" // the css weight property, some fonts like font awesome have a specified weight, check the documentation if needed
+              }
+          },
           type: [
             "circle",
-            "square"
+            "square",
+            "character"
           ]
         },
         size: {
           value: {
-            min: 15,
+            min: 10,
             max: 30
           },
           animation: {

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
-import { loadSlim } from "@tsparticles/slim";
+import { loadAll } from "@tsparticles/all";
 import { loadPolygonMaskPlugin } from "@tsparticles/plugin-polygon-mask";
 import PropTypes from 'prop-types';
 
@@ -9,7 +9,7 @@ export default function LoadingPage({ isLoading }) {
 
   useEffect(() => {
     initParticlesEngine(async (engine) => {
-      await loadSlim(engine);
+      await loadAll(engine);
       await loadPolygonMaskPlugin(engine);
     }).then(() => {
       setInit(true);
