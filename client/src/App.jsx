@@ -5,7 +5,7 @@ import About from "./components/AboutPage"
 import MarketingPage from "./components/MarketingPage"
 import LoadingPage from "./components/LoadingPage"
 import AdminLogin from './components/AdminLogin'
-import Footer from './components/Footer'
+//import Footer from './components/Footer'
 import AdminDash from './components/AdminDash'
 
 export default function App() {
@@ -38,7 +38,7 @@ export default function App() {
           </Routes>
         </div>
       </Router>
-      <Footer />
+      
     </>
   )
 }

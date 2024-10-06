@@ -12,9 +12,9 @@ export default function Navbar() {
   }, []);
 
   return (
-    <div className={`transition-all duration-1000 ease-out transform ${isVisible ? '-translate-x-0' : 'translate-x-full'} flex lg:h-fit pl-2 pt-2 pb-2 text-lg md:text-[3.5vh] lg:leading-tight font-spicy-rice text-white text-center`}>
+    <div className={`transition-all duration-1000 ease-out transform ${isVisible ? '-translate-x-0' : '-translate-x-[90vw]'} flex lg:h-fit pl-2 pt-2 pb-2 text-lg md:text-[3.5vh] lg:leading-tight font-spicy-rice text-white text-center`}>
       <aside>
-        <div className="flex flex-grow">
+        <div className="flex  flex-grow">
           <nav>
             <ul className="space-y-2">
               {['Home', 'About', 'Marketing', 'Login'].map((item, index) => (

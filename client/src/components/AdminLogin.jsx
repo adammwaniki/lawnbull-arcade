@@ -3,6 +3,7 @@ import { ParticlesLogin } from "./ParticlesLogin"
 import Navbar from "./Navbar";
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
+import Footer from './Footer';
 
 export default function AdminLogin() {
   const [username, setUsername] = useState('');
@@ -87,6 +88,7 @@ export default function AdminLogin() {
           </button>
         </form>
         {error && <p className="text-red-500 mt-4">{error}</p>}
+        <Footer />
       </main>
     </div>
   );

@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ClientCardsMini from './cards/ClientCardsMini';
 import ClientCardsFull from './cards/ClientCardsFull';
+import Footer from './Footer';
 //import { AuthContext } from '../context/AuthContext'; // Assume you have an AuthContext
 
 export default function AdminDash() {
@@ -53,7 +54,7 @@ export default function AdminDash() {
         .filter(card => card.title.toLowerCase().includes(searchTerm.toLowerCase()))
         .filter(card => filter === 'all' || card.category === filter);
 
-    const { logout } = useContext(AuthContext);
+    const { logout } = useContext({/*AuthContext*/});  // auth
     const navigate = useNavigate();
   
     const handleLogout = () => {
@@ -115,6 +116,7 @@ export default function AdminDash() {
             >
                 Create New Card
             </button>
+            <Footer />
         </div>
     );
 }

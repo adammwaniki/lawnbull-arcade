@@ -1,9 +1,8 @@
-
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="flex justify-center flex-wrap space-x-6 md:flex-row text-center text-xs md:text-lg p-1 bg-gray-100 text-black left-0 bottom-0 w-screen" style={{ position: 'fixed', }}>
+    <footer className="fixed bottom-0 left-0 right-0 flex justify-center flex-wrap space-x-6 md:flex-row text-center text-xs md:text-lg p-1 bg-gray-100 text-black w-full">
       <div>
         &copy; {currentYear} Lawnbull Limited. All rights reserved.
       </div>

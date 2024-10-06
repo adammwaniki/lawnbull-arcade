@@ -1,3 +1,4 @@
+import Footer from "./Footer"
 import Navbar from "./Navbar"
 
 export default function AboutPage() {
@@ -5,6 +6,7 @@ export default function AboutPage() {
     <div>
       AboutPage
       <Navbar />
+      <Footer />
     </div>
   )
 }
