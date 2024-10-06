@@ -163,10 +163,10 @@ export const ParticlesBackground = () => {
             area: {
               gradient: {
                 start: {
-                  value: "#d4cb92"
+                  value: "#fff"
                 },
                 stop: {
-                  value: "fdb813"
+                  value: "fff"
                 }
               },
               radius: 100
