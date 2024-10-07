@@ -16,7 +16,7 @@ export default function AdminLogin() {
     setError('');
 
     try {
-      const response = await fetch('/api/admin/login', {
+      const response = await fetch('/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -25,12 +25,12 @@ export default function AdminLogin() {
       });
 
       if (response.ok) {
-        const { token } = await response.json();
+        const data = await response.json();
         // Store the JWT token in localStorage
-        localStorage.setItem('adminToken', token);
+        localStorage.setItem('adminToken', data.access_token);
         
         // Decode the token to get user information
-        const decodedToken = jwtDecode(token);
+        const decodedToken = jwtDecode(data.access_token);
         
         // You can store additional user info in localStorage if needed
         localStorage.setItem('adminUsername', decodedToken.username);
@@ -82,7 +82,7 @@ export default function AdminLogin() {
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded-md font-semibold uppercase tracking-wide hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+            className="w-full bg-gradient-to-r from-indigo-500/80 from-10% via-sky-500/80 via-30% to-emerald-500/80 to-90% text-white py-2 px-4 rounded-md font-semibold uppercase tracking-wide hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
           >
             Submit
           </button>
