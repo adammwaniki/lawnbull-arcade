@@ -1,3 +1,6 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMapLocationDot, faPhone, faEnvelopeOpen } from '@fortawesome/free-solid-svg-icons';
+
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
@@ -7,11 +10,18 @@ export default function Footer() {
         &copy; {currentYear} Lawnbull Limited. All rights reserved.
       </div>
       <div>
-        Contact us: +254-722-815-283 | kazibest@yahoo.com
+      <FontAwesomeIcon icon={faPhone} style={{color: "#00e09d",}} />
+        Contact us: +254-722-815-283 | <FontAwesomeIcon icon={faEnvelopeOpen} style={{color: "#74C0FC",}} />kazibest@yahoo.com
       </div>
-      <div>
+      <a
+        href="https://maps.app.goo.gl/oiYvexC32eqxsnK29"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="hover:underline hover:text-blue-600 transition-colors duration-300"
+      >
+        <FontAwesomeIcon icon={faMapLocationDot} style={{color: "#db0000",}} />
         Location: Kenya, Nyeri, Kazi Building, along Kimathi Street
-      </div>
+      </a>
     </footer>
   );
 }
