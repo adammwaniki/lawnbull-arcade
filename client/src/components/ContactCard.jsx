@@ -162,7 +162,7 @@ const ContactCard = () => {
         <div className="mt-6 flex justify-center">
             <button 
             type="submit" 
-            className=" bg-green-500 text-white font-semibold py-2 px-4 rounded hover:bg-green-600"
+            className=" bg-gradient-to-r from-indigo-500/80 from-10% via-sky-500/80 via-30% to-emerald-500/80 to-90% text-white py-2 px-4 rounded-md  tracking-wide hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 font-spicy-rice"
             >
             Send Message
             </button>
