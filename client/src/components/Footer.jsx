@@ -10,8 +10,9 @@ export default function Footer() {
         &copy; {currentYear} Lawnbull Limited. All rights reserved.
       </div>
       <div>
+        Contact us: 
         <FontAwesomeIcon icon={faPhone} style={{color: "#00e09d",}} />
-        Contact us: <a href="tel:+254722815283" className="hover:underline hover:text-blue-600 transition-colors duration-300">+254-722-815-283</a> | <FontAwesomeIcon icon={faEnvelopeOpen} style={{color: "#74C0FC",}} />
+        <a href="tel:+254722815283" className="hover:underline hover:text-blue-600 transition-colors duration-300">+254-722-815-283</a> | <FontAwesomeIcon icon={faEnvelopeOpen} style={{color: "#74C0FC",}} />
         <a href="mailto:kazibest@yahoo.com" className="hover:underline hover:text-blue-600 transition-colors duration-300">kazibest@yahoo.com</a>
       </div>
       <div>
