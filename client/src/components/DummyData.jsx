@@ -7,8 +7,8 @@ export const dummyCards = [
       description: "Step into the world of convenience in shop management. Run your duka from anywhere in the world and leave the physical hustle to us.",
       paragraphs: [
         "Step into the world of convenience in shop management. Run your duka from anywhere in the world and leave the physical hustle to us. Anyone can rent space on our shelves and we'll handle the marketing!",
-        "From iconic maze chasers to space invader battles, our collection spans the breadth of arcade history. Each game is a piece of interactive art, telling the story of video game evolution.",
-        "Whether you're a seasoned gamer looking to relive your youth or a newcomer curious about gaming history, our Arcade Classic offers something for everyone. Get ready to embark on a pixelated journey through time!"
+        "In today’s fast-paced world, convenience is crucial, and our shop management solution gives you control like never before. Imagine managing your duka remotely, with real-time sales data and inventory insights right at your fingertips. Whether at home or on the go, you can oversee operations seamlessly, allowing you to focus on growing your business and connecting with customers.",
+        "Our shelves offer more than just space; they’re opportunities waiting to be explored. By renting shelf space, you can reach a wider audience while we handle the marketing and promotions. Our team employs innovative strategies to showcase your products, driving traffic to your duka. With a diverse community of vendors, you’ll benefit from cross-promotion, creating a vibrant marketplace that attracts more customers. Join us to redefine convenience in shop management!"
       ],
       additionalImages: [
         "https://picsum.photos/seed/arcade1/400/300",
