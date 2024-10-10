@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { ParticlesLogin } from "./ParticlesLogin"
 import Navbar from "./Navbar";
 import { useNavigate } from 'react-router-dom';
@@ -45,9 +45,13 @@ export default function AdminLogin() {
       console.error(error);
     }
   };  
+
+  const MemoizedParticlesLogin = useMemo(() => <ParticlesLogin />, []);
+  // By memoizing the ParticlesLogin component, we ensure that it only renders once when the AdminLogin component mounts, and it won't re-render when the input fields change.
+
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center bg-black">
-      <ParticlesLogin />
+      {MemoizedParticlesLogin}
       <div className="w-full md:w-1/3 md:absolute md:right-0 flex justify-center md:justify-end">
         <Navbar />
       </div>
