@@ -4,8 +4,10 @@ import { loadAll } from "@tsparticles/all"; // if you are going to use `loadAll`
 // import { loadFull } from "tsparticles"; // if you are going to use `loadFull`, install the "tsparticles" package too.
 // import { loadSlim } from "@tsparticles/slim"; // if you are going to use `loadSlim`, install the "@tsparticles/slim" package too.
 // import { loadBasic } from "@tsparticles/basic"; // if you are going to use `loadBasic`, install the "@tsparticles/basic" package too.
+import PropTypes from 'prop-types';
 
-export const ParticlesBackground = () => {
+
+export const ParticlesBackground = ({showLightEffect}) => {
   const [init, setInit] = useState(false);
 
   // this should be run only once per application lifetime
@@ -74,7 +76,7 @@ export const ParticlesBackground = () => {
             type: "circle"
           },
           onHover: {
-            enable: true,
+            enable: showLightEffect,
             mode: "light",
             parallax: {
               enable: false,
@@ -159,7 +161,7 @@ export const ParticlesBackground = () => {
             factor: 3,
             radius: 200
           },
-          light: {
+          light: showLightEffect ? {
             area: {
               gradient: {
                 start: {
@@ -177,7 +179,7 @@ export const ParticlesBackground = () => {
               },
               length: 2000
             }
-          }
+          } : undefined,
         }
       },
       manualParticles: [],
@@ -540,7 +542,7 @@ export const ParticlesBackground = () => {
         }
       }
     }),
-    [],
+    [showLightEffect],
   );
 
   if (init) {
@@ -554,4 +556,8 @@ export const ParticlesBackground = () => {
   }
 
   return <></>;
+};
+
+ParticlesBackground.propTypes = {
+  showLightEffect: PropTypes.bool.isRequired
 };

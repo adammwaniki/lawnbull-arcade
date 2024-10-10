@@ -3,19 +3,32 @@ import Lottie from "lottie-react";
 import animationData from "../assets/bull-flexing-animation.json"
 import Navbar from "./Navbar"
 import Footer from "./Footer";
+import { useState, useEffect } from 'react';
 
 export default function LandingPage() {
+    const [showLightEffect, setShowLightEffect] = useState(false);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setShowLightEffect(window.innerWidth >= 1024); // 1024px is typically the breakpoint for lg screens
+        };
+
+        handleResize(); // Call once to set initial state
+        window.addEventListener('resize', handleResize);
+
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     return (
-      <div className=" relative flex flex-row items-center justify-center min-h-screen min-w-full ">
-        <div className=" flex flex-col ">
-          <ParticlesBackground />
-          <div className=" lawnbull-intro z-10">
-            <h1 className="text-[6rem] lg:text-[10vw] text-center font-wunderbar  ">
+      <div className="relative flex flex-row items-center justify-center min-h-screen min-w-full">
+        <div className="flex flex-col">
+          <ParticlesBackground showLightEffect={showLightEffect} />
+          <div className="lawnbull-intro z-10">
+            <h1 className="text-[6rem] lg:text-[10vw] text-center font-wunderbar">
               Lawnbull Limited
             </h1>
           </div>
           <Lottie animationData={animationData} className="h-[40vh]"/>
-          
         </div>
         <div className="absolute right-0">
           <Navbar />
@@ -24,4 +37,3 @@ export default function LandingPage() {
       </div>
     )
   }
-  
