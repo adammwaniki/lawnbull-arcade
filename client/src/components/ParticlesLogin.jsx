@@ -72,7 +72,7 @@ export const ParticlesLogin = () => {
           value: 300
         },
         opacity: {
-          value: 0.5
+          value: 0.2
         },
         shape: {
           type: "circle"
