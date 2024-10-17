@@ -3,13 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import ClientCardsMini from './cards/ClientCardsMini';
 import ClientCardsFull from './cards/ClientCardsFull';
 import Footer from './Footer';
-//import { AuthContext } from '../context/AuthContext'; // Assume you have an AuthContext
+import { AuthContext } from '../context/AuthContext'; // Assume you have an AuthContext
 
 export default function AdminDash() {
     const [cards, setCards] = useState([]);
     const [selectedCard, setSelectedCard] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [filter, setFilter] = useState('all');
+    
 
     useEffect(() => {
         fetchCards();
@@ -22,16 +23,6 @@ export default function AdminDash() {
         setCards(data);
     };
 
-    const handleCreateCard = async (newCard) => {
-        // Replace with actual API call
-        const response = await fetch('/api/cards', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newCard),
-        });
-        const createdCard = await response.json();
-        setCards([...cards, createdCard]);
-    };
 
     const handleUpdateCard = async (updatedCard) => {
         // Replace with actual API call
@@ -54,7 +45,8 @@ export default function AdminDash() {
         .filter(card => card.title.toLowerCase().includes(searchTerm.toLowerCase()))
         .filter(card => filter === 'all' || card.category === filter);
 
-    const { logout } = useContext({/*AuthContext*/});  // auth
+    const { logout } = useContext(AuthContext);  // auth
+
     const navigate = useNavigate();
   
     const handleLogout = () => {
@@ -111,7 +103,9 @@ export default function AdminDash() {
             )}
 
             <button
-                onClick={() => setSelectedCard({ title: '', subtitle: '', description: '', image: '' })}
+                onClick={() => {
+                    navigate('/admin/new-business')
+                }}
                 className="mt-8 bg-green-500 text-white p-2 rounded"
             >
                 Create New Card

@@ -7,7 +7,7 @@ import { loadAll } from "@tsparticles/all"; // if you are going to use `loadAll`
 import PropTypes from 'prop-types';
 
 
-export const ParticlesBackground = ({showLightEffect}) => {
+export const ParticlesBackground = ({ showLightEffect, darkMode }) => {
   const [init, setInit] = useState(false);
 
   // this should be run only once per application lifetime
@@ -34,7 +34,7 @@ export const ParticlesBackground = ({showLightEffect}) => {
       autoPlay: true,
       background: {
         color: {
-          value: "#ffffff"
+          value: darkMode ? "#000000" : "#ffffff"
         },
         image: "",
         position: "",
@@ -165,17 +165,17 @@ export const ParticlesBackground = ({showLightEffect}) => {
             area: {
               gradient: {
                 start: {
-                  value: "#fff"
+                  value: darkMode ? "#ffff00" : "#ffffff"
                 },
                 stop: {
-                  value: "#fff"
+                  value: darkMode ? "#ffff00" : "#ffffff"
                 }
               },
               radius: 100
             },
             shadow: {
               color: {
-                value: "#a6a5a4"
+                value: darkMode ? "#a6a5a4" : "#a6a5a4"
               },
               length: 2000
             }
@@ -542,7 +542,7 @@ export const ParticlesBackground = ({showLightEffect}) => {
         }
       }
     }),
-    [showLightEffect],
+    [showLightEffect, darkMode],
   );
 
   if (init) {
@@ -559,5 +559,6 @@ export const ParticlesBackground = ({showLightEffect}) => {
 };
 
 ParticlesBackground.propTypes = {
-  showLightEffect: PropTypes.bool.isRequired
+  showLightEffect: PropTypes.bool.isRequired,
+  darkMode: PropTypes.bool.isRequired
 };

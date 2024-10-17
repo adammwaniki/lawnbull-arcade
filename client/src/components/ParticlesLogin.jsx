@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
+import PropTypes from 'prop-types';
 
-export const ParticlesLogin = () => {
+
+export const ParticlesLogin = ({darkMode}) => {
   const [init, setInit] = useState(false);
 
   useEffect(() => {
@@ -21,7 +23,7 @@ export const ParticlesLogin = () => {
     () => ({
       fpsLimit: 60,
       background: {
-        color: "#ffffff"
+        color: darkMode ? "#000000" : "#ffffff"
       },
       interactivity: {
         detect_on: "window",
@@ -54,7 +56,7 @@ export const ParticlesLogin = () => {
       },
       particles: {
         color: {
-          value: "#17163e"
+          value: darkMode ? "#e5e7eb" : "#17163e" 
         },
         move: {
           direction: "none",
@@ -87,7 +89,7 @@ export const ParticlesLogin = () => {
       },
       retina_detect: true
     }),
-    []
+    [darkMode]
   );
 
   if (init) {
@@ -101,4 +103,7 @@ export const ParticlesLogin = () => {
   }
 
   return <></>;
+};
+ParticlesLogin.propTypes = {
+  darkMode: PropTypes.bool.isRequired,
 };

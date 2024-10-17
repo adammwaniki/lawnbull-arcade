@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { ParticlesLogin } from "./ParticlesLogin"
 import Navbar from "./Navbar";
 import { useNavigate } from 'react-router-dom';
@@ -9,7 +9,24 @@ export default function AdminLogin() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [darkMode, setDarkMode] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    setDarkMode(prefersDarkMode);
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = (e) => setDarkMode(e.matches);
+    
+    mediaQuery.addEventListener('change', handleChange);
+
+    return () => {
+      mediaQuery.removeEventListener('change', handleChange);
+    };
+  }, []);
+
+  const toggleDarkMode = () => setDarkMode(!darkMode);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -46,20 +63,20 @@ export default function AdminLogin() {
     }
   };  
 
-  const MemoizedParticlesLogin = useMemo(() => <ParticlesLogin />, []);
+  const MemoizedParticlesLogin = useMemo(() => <ParticlesLogin darkMode={darkMode} />, [darkMode]);
   // By memoizing the ParticlesLogin component, we ensure that it only renders once when the AdminLogin component mounts, and it won't re-render when the input fields change.
 
   return (
-    <div className="relative min-h-screen flex flex-col items-center justify-center bg-black">
+    <div className={`relative min-h-screen flex flex-col items-center justify-center bg-black ${darkMode ? 'dark' : ''}`}>
       {MemoizedParticlesLogin}
       <div className="w-full md:w-1/3 md:absolute md:right-0 flex justify-center md:justify-end">
-        <Navbar />
+        <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
       </div>
-      <main className="bg-[#17163e] bg-opacity-80 p-8 rounded-lg shadow-lg z-10 relative mt-16 md:mt-0">
-        <h2 className="text-2xl font-bold text-white text-center mb-6">Login</h2>
+      <main className="bg-[#17163e] dark:bg-[#17163e] bg-opacity-80 p-8 rounded-lg shadow-lg z-10 relative mt-16 md:mt-0">
+        <h2 className="text-2xl font-bold text-white dark:text-gray-200 text-center mb-6">Login</h2>
         <form className="space-y-6" onSubmit={handleLogin}>
           <div>
-            <label htmlFor="userName" className="block text-white mb-2">Username</label>
+            <label htmlFor="userName" className="block text-white dark:text-gray-300 mb-2">Username</label>
             <input
               type="text"
               name="userName"
@@ -72,7 +89,7 @@ export default function AdminLogin() {
             />
           </div>
           <div>
-            <label htmlFor="userPassword" className="block text-white mb-2">Password</label>
+            <label htmlFor="userPassword" className="block text-white dark:text-gray-300 mb-2">Password</label>
             <input
               type="password"
               name="userPassword"
@@ -92,7 +109,7 @@ export default function AdminLogin() {
           </button>
         </form>
         {error && <p className="text-red-500 mt-4">{error}</p>}
-        <Footer />
+        <Footer darkMode={darkMode}/>
       </main>
     </div>
   );

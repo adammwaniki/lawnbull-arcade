@@ -7,6 +7,9 @@ import LoadingPage from "./components/LoadingPage"
 import AdminLogin from './components/AdminLogin'
 //import Footer from './components/Footer'
 import AdminDash from './components/AdminDash'
+import { AuthProvider } from './context/AuthContext';
+import NewBusinessCard from './components/cards/NewBusinessCard'
+
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -26,7 +29,7 @@ export default function App() {
   }
 
   return (
-    <>
+    <AuthProvider>
       <Router>
         <div className="App">
           <Routes>
@@ -35,10 +38,11 @@ export default function App() {
             <Route path="/marketing" element={<MarketingPage />} />
             <Route path="/login" element={<AdminLogin />} />
             <Route path="/admin/dashboard" element={<AdminDash />} />
+            <Route path="/admin/new-business" element={<NewBusinessCard />} />
           </Routes>
         </div>
       </Router>
       
-    </>
+    </AuthProvider>
   )
 }

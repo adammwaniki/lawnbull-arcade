@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Lottie from "lottie-react";
 import Navbar from "./Navbar";
 import ClientCardsMini from "./cards/ClientCardsMini";
@@ -7,14 +7,27 @@ import { dummyCards } from './DummyData';
 import onlineMarketingAnimation from '../assets/online-marketing-animation.json';
 import Footer from './Footer';
 
-
-
 export default function MarketingPage() {
   const [cards, setCards] = useState([]);
   const [selectedCard, setSelectedCard] = useState(null);
+  const [darkMode, setDarkMode] = useState(false);
+  
+  const toggleDarkMode = () => setDarkMode(!darkMode);
 
   useEffect(() => {
+    const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    setDarkMode(prefersDarkMode);
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = (e) => setDarkMode(e.matches);
+    mediaQuery.addEventListener('change', handleChange);
+
+    // Fetch cards from API
     fetchCards();
+
+    return () => {
+      mediaQuery.removeEventListener('change', handleChange);
+    };
   }, []);
 
   const fetchCards = async () => {
@@ -32,23 +45,27 @@ export default function MarketingPage() {
     setSelectedCard(null);
   };
 
+  const MemoizedLottieAnimation = useMemo(() => (
+    <Lottie 
+      animationData={onlineMarketingAnimation} 
+      loop={true}
+      autoplay={true}
+      style={{ width: '100%', height: '100%' }}
+    />
+  ), []);
+
   return (
-    <>
+    <div className={`relative min-h-screen flex flex-col ${darkMode ? 'dark bg-black' : 'bg-white'}`}>
       <div className="fixed inset-0 z-0">
-        <Lottie 
-          animationData={onlineMarketingAnimation} 
-          loop={true}
-          autoplay={true}
-          style={{ width: '100%', height: '100%' }}
-        />
+        {MemoizedLottieAnimation}
       </div>
       <div className="relative z-10 flex flex-col min-h-screen">
         <div className="flex-grow overflow-y-auto overflow-x-hidden">
           <div className="mt-8 w-full md:w-1/3 md:fixed md:right-0 md:top-1/2 md:transform md:-translate-y-1/2 flex justify-center md:justify-end z-20">
-            <Navbar />
+            <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
           </div>
           <div className="container mx-auto px-4 py-8 z-10 mt-7 md:mt-0 md:ml-0 md:mr-[calc(33.33%+10px)] max-w-full pb-24">
-            <h1 className="text-center md:text-left text-[4rem] lg:text-[6vw] font-spicy-rice mb-8 bg-gradient-to-br from-[#A6A5A4] from-10% via-[#5855cb] via-30% to-[#66321b] to-70% text-transparent bg-clip-text">Market With Us</h1>
+            <h1 className="text-center md:text-left text-[4rem] lg:text-[6vw] font-spicy-rice mb-8 bg-gradient-to-bl from-[#A6A5A4] from-20% via-[#5855cb] via-30% to-[#66321b] to-70% text-transparent bg-clip-text dark:from-[#E0E0E0] dark:via-[#7A77E0] dark:to-[#A05A3F]">Market With Us</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:max-w-[80vw] gap-8">
               {cards.map((card) => (
                 <ClientCardsMini
@@ -64,9 +81,9 @@ export default function MarketingPage() {
           )}
         </div>
         <div className="relative z-10">
-          <Footer />
+          <Footer darkMode={darkMode} />
         </div>
       </div>
-    </>
-  );    
+    </div>
+  );
 }

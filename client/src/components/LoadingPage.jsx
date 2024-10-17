@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 
 export default function LoadingPage({ isLoading }) {
   const [init, setInit] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
     initParticlesEngine(async (engine) => {
@@ -14,6 +15,19 @@ export default function LoadingPage({ isLoading }) {
     }).then(() => {
       setInit(true);
     });
+    
+    // Check initial dark mode preference
+    const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    setDarkMode(prefersDarkMode);
+
+    // Listen for changes in dark mode preference
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = (e) => setDarkMode(e.matches);
+    mediaQuery.addEventListener('change', handleChange);
+
+    return () => {
+      mediaQuery.removeEventListener('change', handleChange);
+    };
   }, []);
 
   const particlesLoaded = (container) => {
@@ -64,7 +78,7 @@ export default function LoadingPage({ isLoading }) {
           speed: { min: 0.5, max: 1 }
         },
         number: {
-          value: 200
+          value: 130
         },
         opacity: {
           animation: {
@@ -92,7 +106,7 @@ export default function LoadingPage({ isLoading }) {
         draw: {
           enable: true,
           stroke: {
-            color: "#000000",
+            color: darkMode ? "#ffffff" : "#000000",
             width: 0.8,
             opacity: 0.4
           }
@@ -106,9 +120,9 @@ export default function LoadingPage({ isLoading }) {
         scale: 0.5,
         type: "inline",
         url: "https://particles.js.org/images/smalldeer.svg"
-      }
+        }
     }),
-    []
+    [darkMode]
   );
 
   return (
@@ -118,8 +132,8 @@ export default function LoadingPage({ isLoading }) {
       left: 0,
       width: "100%",
       height: "100vh",
-      backgroundColor: "#ffffff",
-      transition: "opacity 0.5s ease-in-out",
+      backgroundColor: darkMode ? "#000000" : "#ffffff",
+      transition: "opacity 0.75s ease-in-out, background-color 0.3s ease-in-out",
       opacity: isLoading ? 1 : 0,
       pointerEvents: isLoading ? "auto" : "none",
       zIndex: 9999
@@ -136,16 +150,16 @@ export default function LoadingPage({ isLoading }) {
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        color: "#0d0d0d",
+        color: darkMode ? "#ffffff" : "#0d0d0d",
         fontSize: "24px",
         zIndex: 1
       }}>
         Loading...
       </div>
     </div>
-  );
+  );  
 }
 
 LoadingPage.propTypes = {
-  isLoading: PropTypes.bool.isRequired
+  isLoading: PropTypes.bool.isRequired,
 };
