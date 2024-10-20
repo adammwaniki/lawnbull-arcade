@@ -367,8 +367,8 @@ export const ParticlesBackground = ({ showLightEffect, darkMode }) => {
         },
         size: {
           value: {
-            min: 10,
-            max: 30
+            min: 7,
+            max: 17
           },
           animation: {
             count: 0,
