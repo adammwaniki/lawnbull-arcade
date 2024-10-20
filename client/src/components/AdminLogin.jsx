@@ -31,29 +31,33 @@ export default function AdminLogin() {
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
-
+  
     try {
-      const response = await fetch('/login', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ email: username, password }),
+        credentials: 'include'
       });
-
+  
       if (response.ok) {
         const data = await response.json();
-        // Store the JWT token in localStorage
-        localStorage.setItem('adminToken', data.access_token);
+        localStorage.setItem('accessToken', data.access_token);
+        localStorage.setItem('refreshToken', data.refresh_token);
         
-        // Decode the token to get user information
+        localStorage.setItem('username', data.user.username);
+        localStorage.setItem('email', data.user.email);
+        localStorage.setItem('publicId', data.user.public_id);
+  
         const decodedToken = jwtDecode(data.access_token);
         
-        // You can store additional user info in localStorage if needed
-        localStorage.setItem('adminUsername', decodedToken.username);
-        
-        // Redirect to admin dashboard
-        navigate('/admin/dashboard');
+        if (decodedToken.isAdmin) {
+          navigate('/admin/dashboard');
+        } else {
+          setError('You do not have admin privileges');
+        }
       } else {
         setError('Invalid username or password');
       }
@@ -61,7 +65,8 @@ export default function AdminLogin() {
       setError('An error occurred. Please try again.');
       console.error(error);
     }
-  };  
+  };
+  
 
   const MemoizedParticlesLogin = useMemo(() => <ParticlesLogin darkMode={darkMode} />, [darkMode]);
   // By memoizing the ParticlesLogin component, we ensure that it only renders once when the AdminLogin component mounts, and it won't re-render when the input fields change.
@@ -73,7 +78,7 @@ export default function AdminLogin() {
         <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
       </div>
       <main className="bg-[#17163e] dark:bg-[#17163e] bg-opacity-80 p-8 rounded-lg shadow-lg z-10 relative mt-16 md:mt-0">
-        <h2 className="text-2xl font-bold text-white dark:text-gray-200 text-center mb-6">Login</h2>
+        <h2 className="text-2xl font-spicy-rice tracking-wider text-white dark:text-gray-200 text-center mb-6">Login</h2>
         <form className="space-y-6" onSubmit={handleLogin}>
           <div>
             <label htmlFor="userName" className="block text-white dark:text-gray-300 mb-2">Username</label>
@@ -103,7 +108,7 @@ export default function AdminLogin() {
           </div>
           <button
             type="submit"
-            className="w-full bg-gradient-to-r from-indigo-500/80 from-10% via-sky-500/80 via-30% to-emerald-500/80 to-90% text-white py-2 px-4 rounded-md font-semibold uppercase tracking-wide hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+            className="w-full bg-gradient-to-r from-indigo-500/80 from-10% via-sky-500/80 via-30% to-emerald-500/80 to-90% text-white py-2 px-4 rounded-md font-spicy-rice uppercase tracking-wider hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
           >
             Submit
           </button>

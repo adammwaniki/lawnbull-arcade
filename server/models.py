@@ -14,9 +14,9 @@ class User(db.Model, SerializerMixin):
     id = Column(Integer, primary_key=True)
     public_id = Column(String(50), unique=True)
     username = Column(String(50))
-    password = Column(String(80))
+    password = Column(String(255))
     admin = Column(Boolean)
-    email = Column(String(50))
+    email = Column(String(255))
 
     def __repr__(self):
         return f'<User (id={self.id}, {self.user_name}, email={self.email})>'
@@ -24,23 +24,27 @@ class User(db.Model, SerializerMixin):
 
 class Business(db.Model, SerializerMixin):
     __tablename__ = 'business'
+    
     id = Column(Integer, primary_key=True)
-    business_identifier = Column(String(32), unique=True, default=lambda: str(uuid.uuid4().hex), index=True)
+    business_identifier = Column(String(32), unique=True, default=lambda: str(uuid.uuid4().hex), index=True, name='ix_business_identifier')
     name = Column(String(50), index=True)
-    postal_address = Column(String(50))
-    city = Column(String(50))
-    county = Column(String(50))
-    postal_code = Column(String(50))
-    country = Column(String(50))
-    phone_number = Column(String(50))
-    email = Column(String(50))
-    website = Column(String(130))
-    description = Column(String)
-    hours = Column(String(50))
-    price_range = Column(String(50))
-    image_url = Column(String)
-    # user_id = Column(Integer, ForeignKey('user.id'))  # If the app grows we can implement this 
-    # user = relationship('User', backref='businesses')
+    subtitle = Column(String(255))
+    main_image_url = Column(String(255))
+    additional_image_url1 = Column(String(255))
+    additional_image_url2 = Column(String(255))
+    additional_image_url3 = Column(String(255))
+    paragraph1 = Column(Text)
+    paragraph2 = Column(Text)
+    paragraph3 = Column(Text)
 
     def __repr__(self):
-        return f'<Business (id={self.id}, {self.name}, {self.postal_address}, {self.city}, {self.county}, {self.postal_code}, {self.country}, {self.phone_number}, {self.email}, {self.website}, {self.description}, {self.hours}, {self.price_range}, {self.image_url})>'
+        return f'<Business (id={self.id}, name={self.name})>'
+
+
+class BlacklistedToken(db.Model):
+    id = Column(Integer, primary_key=True)
+    jti = Column(String(36), nullable=False, unique=True)
+    created_at = Column(DateTime, nullable=False, default=func.now())
+    def __repr__(self):
+        return f'<BlacklistedToken (id={self.id}, jti={self.jti}, created_at={self.created_at})>'
+

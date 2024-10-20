@@ -10,7 +10,7 @@ export default function NewBusinessCard() {
 
     
     const [formData, setFormData] = useState({
-        title: '',
+        name: '',
         subtitle: '',
         paragraphs: ['', '', ''],
         mainImage: null,
@@ -18,23 +18,44 @@ export default function NewBusinessCard() {
     });
 
     const onDrop = (acceptedFiles, field) => {
-        if (field === 'mainImage') {
-        setFormData({ ...formData, [field]: acceptedFiles[0] });
+        if (acceptedFiles.length > 0) {
+            // Handle file upload
+            if (field === 'mainImage') {
+                setFormData({ ...formData, [field]: acceptedFiles[0] });
+            } else {
+                setFormData({ ...formData, [field]: [...formData[field], ...acceptedFiles] });
+            }
         } else {
-        setFormData({ ...formData, [field]: [...formData[field], ...acceptedFiles] });
+            // Handle URL input
+            const url = window.prompt("Enter image URL:");
+            if (url) {
+                if (field === 'mainImage') {
+                    setFormData({ ...formData, [field]: { url } });
+                } else {
+                    setFormData({ ...formData, [field]: [...formData[field], { url }] });
+                }
+            }
         }
     };
+    
+      
 
-    const { getRootProps: getMainImageProps, getInputProps: getMainImageInputProps } = useDropzone({
+      const { getRootProps: getMainImageProps, getInputProps: getMainImageInputProps } = useDropzone({
         onDrop: (files) => onDrop(files, 'mainImage'),
-        accept: 'image/*',
+        accept: {
+            'image/*': ['.jpeg', '.jpg', '.png', '.gif']
+        }
     });
+    
 
     const { getRootProps: getAdditionalImagesProps, getInputProps: getAdditionalImagesInputProps } = useDropzone({
         onDrop: (files) => onDrop(files, 'additionalImages'),
-        accept: 'image/*',
+        accept: {
+            'image/*': ['.jpeg', '.jpg', '.png', '.gif']
+        },
         multiple: true,
     });
+    
 
     const handleInputChange = (e, index) => {
         const { name, value } = e.target;
@@ -64,19 +85,63 @@ export default function NewBusinessCard() {
     
       //const toggleDarkMode = () => setDarkMode(!darkMode); currently not implementing the same navbar for admin as users
 
-    const handleSubmit = async (e) => {
+      const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            // TODO: Implement POST request to backend
-            console.log('Form data submitted:', formData);
+          // Client-side validation
+          if (!formData.name || !formData.name.trim()) {
+            throw new Error('Business name is required');
+          }
+          if (!formData.subtitle || !formData.subtitle.trim()) {
+            throw new Error('Business subtitle is required');
+          }
+      
+          const formDataToSend = new FormData();
+          formDataToSend.append('name', formData.name.trim());
+          formDataToSend.append('subtitle', formData.subtitle.trim());
+          formData.paragraphs.forEach((paragraph, index) => {
+            formDataToSend.append(`paragraph${index + 1}`, paragraph.trim());
+          });
+          if (formData.mainImage) {
+            if (formData.mainImage.url) {
+              formDataToSend.append('mainImageUrl', formData.mainImage.url);
+            } else {
+              formDataToSend.append('mainImage', formData.mainImage);
+            }
+          }
+          formData.additionalImages.forEach((image, index) => {
+            if (image.url) {
+              formDataToSend.append(`additionalImageUrl${index + 1}`, image.url);
+            } else {
+              formDataToSend.append(`additionalImage${index + 1}`, image);
+            }
+          });
+      
+          const token = localStorage.getItem('token');
 
-            // Assuming the submission was successful
-            navigate('/admin/dashboard');
+      
+          const response = await fetch(`${import.meta.env.VITE_API_URL}/business`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`
+            },
+            body: formDataToSend,
+          });
+      
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'An error occurred while creating the business');
+          }
+      
+          const result = await response.json();
+          console.log('Business created:', result);
+          navigate('/admin/dashboard');
         } catch (error) {
-            console.error('Error submitting form:', error);
-            // Handle error (e.g., show error message to user)
+          console.error('Error submitting form:', error);
+          alert(`Error: ${error.message}`);
         }
-    };
+      };   
+      
 
     const removeImage = (index, field) => {
         const updatedImages = [...formData[field]];
@@ -93,7 +158,11 @@ export default function NewBusinessCard() {
                     <input {...getMainImageInputProps()} />
                     {formData.mainImage ? (
                         <>
-                        <img src={URL.createObjectURL(formData.mainImage)} alt="Main image" className="w-full h-full object-cover rounded-md" />
+                        <img 
+                            src={formData.mainImage.url || URL.createObjectURL(formData.mainImage)} 
+                            alt="Main image" 
+                            className="w-full h-full object-cover rounded-md" 
+                        />
                         <button
                             onClick={(e) => {
                             e.stopPropagation();
@@ -105,14 +174,20 @@ export default function NewBusinessCard() {
                         </button>
                         </>
                     ) : (
-                        <p className="text-gray-400">Drag and drop main image here,<br/> or click to select file</p>
+                        <p className="text-gray-400">Drag and drop main image here,<br/> or click to select file or enter URL</p>
                     )}
                 </div>
-
+                <button
+                    type="button"
+                    onClick={() => onDrop([], 'mainImage')}
+                    className="mb-6 bg-blue-500 text-white py-2 px-4 rounded"
+                >
+                    Enter Image URL
+                </button>
                 <input
                     type="text"
-                    name="title"
-                    value={formData.title}
+                    name="name"
+                    value={formData.name}
                     onChange={handleInputChange}
                     placeholder="Business Name"
                     className="w-full bg-transparent text-3xl font-bold text-[#fff] mb-2 border-b border-gray-300 focus:outline-none focus:border-blue-500"
@@ -143,7 +218,11 @@ export default function NewBusinessCard() {
                     <input {...getAdditionalImagesInputProps()} />
                     {formData.additionalImages.map((img, index) => (
                         <div key={index} className="relative w-full h-48 bg-gray-200 rounded-md flex items-center justify-center">
-                        <img src={URL.createObjectURL(img)} alt={`Additional image ${index + 1}`} className="w-full h-full object-cover rounded-md" />
+                        <img 
+                            src={img.url || URL.createObjectURL(img)} 
+                            alt={`Additional image ${index + 1}`} 
+                            className="w-full h-full object-cover rounded-md" 
+                        />
                         <button
                             onClick={(e) => {
                             e.stopPropagation();
@@ -161,6 +240,13 @@ export default function NewBusinessCard() {
                         </div>
                     )}
                 </div>
+                <button
+                    type="button"
+                    onClick={() => onDrop([], 'additionalImages')}
+                    className="mb-6 bg-blue-500 text-white py-2 px-4 rounded"
+                >
+                    Enter Additional Image URL
+                </button>
                 <div className="flex justify-center space-x-10 mt-6">
                     <button
                         onClick={() => navigate('/admin/dashboard')}
@@ -181,3 +267,4 @@ export default function NewBusinessCard() {
     </div>
     );
 }
+

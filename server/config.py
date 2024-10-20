@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from flask_restful import Api, Resource
@@ -10,10 +11,15 @@ from datetime import timedelta
 
 load_dotenv()
 
+# Get the DATABASE_URI from environment variables
 DATABASE_URI = os.getenv('DATABASE_URI')
 
+# Ensure DATABASE_URI is set
+if not DATABASE_URI:
+    raise ValueError("No DATABASE_URI set for Flask application")
+
 app = Flask(__name__)
-app.config['JWT_SECRET_KEY'] = os.random(24)
+app.config['JWT_SECRET_KEY'] = os.urandom(24)
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -26,4 +32,6 @@ db.init_app(app)
 jwt = JWTManager(app)
 
 api = Api(app)
+
+CORS(app, supports_credentials=True)
 
