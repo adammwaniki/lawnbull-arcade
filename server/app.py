@@ -32,6 +32,15 @@ def upload_file(file):
 def home():
     return jsonify({'message': 'Welcome to the Lawnbull Arcade API'}), 200
 
+@app.after_request
+def after_request(response):
+    origin = request.headers.get('Origin')
+    if origin in ["https://lawnbull-arcade.vercel.app", "http://localhost:5173"]:
+        response.headers.add('Access-Control-Allow-Origin', origin)
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    response.headers.add('Access-Control-Allow-Credentials', 'true')
+    return response
 
 
 @app.route('/user', methods=['POST'])
@@ -238,4 +247,4 @@ api.add_resource(TokenRefresh, '/token/refresh', endpoint='token_refresh')
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
