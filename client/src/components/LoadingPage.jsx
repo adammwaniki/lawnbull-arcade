@@ -30,9 +30,7 @@ export default function LoadingPage({ isLoading }) {
     };
   }, []);
 
-  const particlesLoaded = (container) => {
-    console.log(container);
-  };
+  // Removed console.log
 
   const options = useMemo(
     () => ({
@@ -141,7 +139,7 @@ export default function LoadingPage({ isLoading }) {
       {init && (
         <Particles
           id="tsparticles"
-          particlesLoaded={particlesLoaded}
+          
           options={options}
         />
       )}

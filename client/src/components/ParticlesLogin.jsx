@@ -15,9 +15,7 @@ export const ParticlesLogin = ({darkMode}) => {
     });
   }, []);
 
-  const particlesLoaded = (container) => {
-    console.log(container);
-  };
+  
 
   const options = useMemo(
     () => ({
@@ -96,7 +94,6 @@ export const ParticlesLogin = ({darkMode}) => {
     return (
       <Particles
         id="tsparticles"
-        particlesLoaded={particlesLoaded}
         options={options}
       />
     );

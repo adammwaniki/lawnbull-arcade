@@ -25,9 +25,7 @@ export const ParticlesBackground = ({ showLightEffect, darkMode }) => {
     });
   }, []);
 
-  const particlesLoaded = (container) => {
-    console.log(container);
-  };
+  
 
   const options = useMemo(
     () => ({
@@ -549,7 +547,7 @@ export const ParticlesBackground = ({ showLightEffect, darkMode }) => {
     return (
       <Particles
         id="tsparticles"
-        particlesLoaded={particlesLoaded}
+        
         options={options}
       />
     );
