@@ -6,7 +6,7 @@ export default function Footer({ darkMode }) {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className={`fixed bottom-0 left-0 right-0 flex justify-center flex-wrap space-x-6 md:flex-row text-center text-xs md:text-lg p-1 ${darkMode ? 'bg-gray-800 text-white' : 'bg-gray-100 text-black'} w-full`}>
+    <footer className={`fixed bottom-0 left-0 right-0 flex justify-center flex-wrap space-x-6 md:flex-row text-center text-xs md:text-lg p-1 ${darkMode ? 'bg-gray-800 text-white' : 'bg-gray-100 text-black'} w-full z-50`}>
       <div>
         &copy; {currentYear} Lawnbull Limited. All rights reserved.
       </div>
