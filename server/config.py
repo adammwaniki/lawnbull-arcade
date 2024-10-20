@@ -33,5 +33,5 @@ jwt = JWTManager(app)
 
 api = Api(app)
 
-CORS(app, origins=["https://lawnbull-arcade.vercel.app"], supports_credentials=True)
+CORS(app, origins=["https://lawnbull-arcade.vercel.app", "https://lawnbull-arcade.onrender.com"], supports_credentials=True)
 

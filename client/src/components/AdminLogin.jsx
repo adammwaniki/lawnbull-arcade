@@ -33,6 +33,7 @@ export default function AdminLogin() {
     setError('');
   
     try {
+      console.log('API URL:', import.meta.env.VITE_API_URL)
       const response = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
         method: 'POST',
         headers: {
