@@ -28,6 +28,11 @@ def upload_file(file):
         return upload_result['secure_url']
     return None
 
+@app.route('/')
+def home():
+    return jsonify({'message': 'Welcome to the Lawnbull Arcade API'}), 200
+
+
 
 @app.route('/user', methods=['POST'])
 def create_user():
