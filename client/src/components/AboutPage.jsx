@@ -34,8 +34,8 @@ export default function AboutPage() {
         <div className="flex flex-col md:flex-row  md:justify-between md:h-[90vh]">
 
           {/* Left Side Content */}
-          <div className="flex-1 max-w-md pb-6 pt-6 mt-6 bg-gray-500 bg-opacity-15 shadow-md rounded-lg p-4 md:p-6 mb-12 md:mb-0 md:mr-4  overflow-auto md:order-1 ">
-            <h3 className="text-[2rem] lg:text-[2vw] lg:leading-tight text-[#17163e] dark:text-white mb-4 font-spicy-rice">Growing Your Brand, One Lawn at a Time</h3>
+          <div className="flex-1 max-w-md pb-6 pt-6 mt-6 bg-[#f2f2b2] bg-opacity-15 shadow-md rounded-lg p-4 md:p-6 mb-12 md:mb-0 md:mr-4  overflow-auto md:order-1 ">
+            <h3 className="text-[2rem] lg:text-[2vw] lg:leading-tight text-[#17163e] dark:text-white mb-4 font-spicy-rice">Growing Your Brand, <br/> One Lawn at a Time </h3>
             <div className="text-[#17163e] dark:text-white font-semibold space-y-5 text-md md:text-[1.05rem]">
               <p>
                 At Lawnbull Limited, we specialize in marketing that helps your business thrive.
