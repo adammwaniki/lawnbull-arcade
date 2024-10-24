@@ -80,10 +80,10 @@ export default function AdminLogin() {
         <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
       </div>
       <main className="bg-[#17163e] dark:bg-[#17163e] bg-opacity-80 p-8 rounded-lg shadow-lg z-10 relative mt-16 md:mt-0">
-        <h2 className="text-2xl font-spicy-rice tracking-wider text-white dark:text-gray-200 text-center mb-6">Login</h2>
+        <h2 className="text-4xl font-arima font-extrabold tracking-wider text-white dark:text-gray-200 text-center mb-6">Login</h2>
         <form className="space-y-6" onSubmit={handleLogin}>
           <div>
-            <label htmlFor="userName" className="block text-white dark:text-gray-300 mb-2">Username</label>
+            <label htmlFor="userName" className="block text-white font-arima font-extrabold tracking-wider text-xl dark:text-gray-300 mb-2">Username</label>
             <input
               type="text"
               name="userName"
@@ -96,7 +96,7 @@ export default function AdminLogin() {
             />
           </div>
           <div>
-            <label htmlFor="userPassword" className="block text-white dark:text-gray-300 mb-2">Password</label>
+            <label htmlFor="userPassword" className="block text-white font-arima font-extrabold tracking-wider text-xl dark:text-gray-300 mb-2">Password</label>
             <input
               type="password"
               name="userPassword"
@@ -110,7 +110,7 @@ export default function AdminLogin() {
           </div>
           <button
             type="submit"
-            className="w-full bg-gradient-to-r from-indigo-500/80 from-10% via-sky-500/80 via-30% to-emerald-500/80 to-90% text-white py-2 px-4 rounded-md font-spicy-rice uppercase tracking-wider hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+            className="w-full bg-gradient-to-r from-indigo-500/80 from-10% via-sky-500/80 via-30% to-emerald-500/80 to-90% text-white py-2 px-4 rounded-md font-arima font-extrabold tracking-wide text-xl uppercase hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
           >
             Submit
           </button>

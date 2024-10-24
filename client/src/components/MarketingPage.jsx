@@ -56,7 +56,7 @@ export default function MarketingPage() {
 
   return (
     <div className={`relative min-h-screen flex flex-col ${darkMode ? 'dark bg-black' : 'bg-white'}`}>
-      <div className="fixed inset-0 z-0">
+      <div className="fixed opacity-60 inset-0 z-0">
         {MemoizedLottieAnimation}
       </div>
       <div className="relative z-10 flex flex-col min-h-screen">
@@ -65,7 +65,7 @@ export default function MarketingPage() {
             <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
           </div>
           <div className="container mx-auto px-4 py-8 z-10 mt-7 md:mt-0 md:ml-0 md:mr-[calc(33.33%+10px)] max-w-full pb-24">
-            <h1 className="text-center md:text-left text-[4rem] lg:text-[6vw] font-spicy-rice mb-8 bg-gradient-to-bl from-[#A6A5A4] from-20% via-[#5855cb] via-30% to-[#66321b] to-70% text-transparent bg-clip-text dark:from-[#E0E0E0] dark:via-[#7A77E0] dark:to-[#A05A3F]">Market With Us</h1>
+            <h1 className="text-center md:text-left text-[4rem] lg:text-[6vw] font-playfair-display font-bold mb-8 text-[#17163e] bg-clip-text dark:text-white">Market With Us</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:max-w-[80vw] gap-8">
               {cards.map((card) => (
                 <ClientCardsMini

@@ -9,6 +9,8 @@ export default {
       fontFamily: {
         'wunderbar': ['wunderbar'],
         'spicy-rice': ['Spicy Rice'],
+        'playfair-display': ['Playfair Display'],
+        'arima':['arima'],
 
       }
     },

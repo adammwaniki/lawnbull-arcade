@@ -13,8 +13,8 @@ export default function ClientCardsFull({ image, title, subtitle, paragraphs, ad
           </svg>
         </button>
         <img src={image} alt={title} className="w-full h-64 object-cover rounded-md mb-6" />
-        <h1 className="text-3xl font-bold text-[#fff] mb-2">{title}</h1>
-        <h2 className="text-xl text-[#fff] mb-4">{subtitle}</h2>
+        <h1 className="text-3xl font-arima font-extrabold tracking-wide text-[#fff] mb-2">{title}</h1>
+        <h2 className="text-xl font-playfair-display font-medium tracking-wide italic text-[#fff] mb-4">{subtitle}</h2>
         <div className="prose prose-invert max-w-none mb-6">
           {paragraphs.map((paragraph, index) => (
             <p key={index} className="mb-4 text-[#fff]">{paragraph}</p>

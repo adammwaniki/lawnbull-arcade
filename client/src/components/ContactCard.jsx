@@ -44,7 +44,7 @@ const ContactCard = () => {
 
   return (
     <div className="max-w-sm mx-auto bg-[#17163e] bg-opacity-80   rounded-lg p-6">
-      <h2 className="text-2xl font-bold text-white mb-4">Contact Us</h2>
+      <h2 className="text-2xl font-arima font-extrabold text-white mb-4">Contact Us</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label className="block text-white mb-1" htmlFor="name">Name:</label>
@@ -162,7 +162,7 @@ const ContactCard = () => {
         <div className="mt-6 flex justify-center">
             <button 
             type="submit" 
-            className=" bg-gradient-to-r from-indigo-500/80 from-10% via-sky-500/80 via-30% to-emerald-500/80 to-90% text-white py-2 px-4 rounded-md  tracking-wide hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 font-spicy-rice"
+            className=" bg-gradient-to-r from-indigo-500/80 from-10% via-sky-500/80 via-30% to-emerald-500/80 to-90% text-white py-2 px-4 rounded-md  tracking-wide hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 font-arima font-extrabold"
             >
             Send Message
             </button>

@@ -354,9 +354,9 @@ export const ParticlesBackground = ({ showLightEffect, darkMode }) => {
           options: {
             character: {
               value: ["marketing", "adverts"], // the text to use as particles, any string is valid, for escaping unicode char use the `\uXXXX` syntax
-              font: "Spicy Rice", // the font to use to draw the text. If the font needs an external css or javascript like FontAwesome you should include all the necessary files on your own
+              font: "Arima", // the font to use to draw the text. If the font needs an external css or javascript like FontAwesome you should include all the necessary files on your own
               style: "", // any additional css style to add to the text
-              weight: "" // the css weight property, some fonts like font awesome have a specified weight, check the documentation if needed
+              weight: "700" // the css weight property, some fonts like font awesome have a specified weight, check the documentation if needed
               }
           },
           type: [

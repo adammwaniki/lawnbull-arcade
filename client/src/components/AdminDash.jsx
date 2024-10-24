@@ -97,7 +97,7 @@ export default function AdminDash() {
         <div className={`relative min-h-screen flex flex-col bg-black ${darkMode ? 'dark' : ''}`}>
         {MemoizedParticlesLogin}
             <main className="bg-[#17163e] dark:bg-[#17163e] bg-opacity-60 dark:bg-opacity-60 p-8 shadow-lg z-10 w-4/5 h-[calc(100vh-3.5rem)] md:h-[calc(100vh-4rem)] 2xl:h-[calc(100vh-2.25rem)] mx-auto overflow-y-auto flex flex-col mb-16">
-                <h1 className="text-4xl  mb-8 text-white font-spicy-rice dark:text-gray-200">Admin Dashboard</h1>
+                <h1 className="text-4xl  mb-8 text-white font-arima font-extrabold tracking-wide dark:text-gray-200">Admin Dashboard</h1>
                 
                 <button 
                     onClick={handleLogout}

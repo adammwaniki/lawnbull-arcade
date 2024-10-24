@@ -9,6 +9,7 @@ import AdminLogin from './components/AdminLogin'
 import AdminDash from './components/AdminDash'
 import { AuthProvider } from './context/AuthContext';
 import NewBusinessCard from './components/cards/NewBusinessCard'
+import ErrorPage from './components/ErrorPage'
 
 
 export default function App() {
@@ -18,7 +19,7 @@ export default function App() {
     // Simulate loading time or use actual loading logic
     const timer = setTimeout(() => {
     setIsLoading(false);
-    }, 2500); // Adjust time as needed
+    }, 1500); // Adjust time as needed
     
     
     return () => clearTimeout(timer);
@@ -39,6 +40,7 @@ export default function App() {
             <Route path="/login" element={<AdminLogin />} />
             <Route path="/admin/dashboard" element={<AdminDash />} />
             <Route path="/admin/new-business" element={<NewBusinessCard />} />
+            <Route path="*" element={<ErrorPage />} />
           </Routes>
         </div>
       </Router>
