@@ -5,21 +5,26 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
 
   useEffect(() => {
     // Check if user data exists in localStorage on component mount
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       setUser(JSON.parse(storedUser));
+      setIsAuthenticated(true);
     }
   }, []);
 
-  const login = (userData) => {
-    setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
-    localStorage.setItem('accessToken', userData.accessToken);
-    localStorage.setItem('refreshToken', userData.refreshToken);
-  };
+  // Updated login function to check if a user is authenticated so that they can access the protected routes
+const login = (userData) => {
+  setUser(userData);
+  setIsAuthenticated(true);
+  localStorage.setItem('user', JSON.stringify(userData));
+  localStorage.setItem('accessToken', userData.accessToken);
+  localStorage.setItem('refreshToken', userData.refreshToken);
+};
 
   const logout = async () => {
     try {
@@ -41,6 +46,7 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error('Error during logout:', error);
     }
+    setIsAuthenticated(false);
   };
 
   const refreshToken = async () => {
@@ -66,12 +72,11 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, refreshToken }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, login, logout, refreshToken }}>
       {children}
     </AuthContext.Provider>
   );
 };
-
 AuthProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };

@@ -10,6 +10,7 @@ import AdminDash from './components/AdminDash'
 import { AuthProvider } from './context/AuthContext';
 import NewBusinessCard from './components/cards/NewBusinessCard'
 import ErrorPage from './components/ErrorPage'
+import ProtectedRoute from './components/ProtectedRoute'
 
 
 export default function App() {
@@ -38,8 +39,18 @@ export default function App() {
             <Route path="/about" element={<AboutPage />} />
             <Route path="/marketing" element={<MarketingPage />} />
             <Route path="/login" element={<AdminLogin />} />
-            <Route path="/admin/dashboard" element={<AdminDash />} />
-            <Route path="/admin/new-business" element={<NewBusinessCard />} />
+            <Route path="/admin/dashboard" element={
+                    <ProtectedRoute>
+                        <AdminDash />
+                    </ProtectedRoute>
+                } 
+            />
+            <Route path="/admin/new-business" element={
+                    <ProtectedRoute>
+                        <NewBusinessCard />
+                    </ProtectedRoute>
+                } 
+            />
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </div>
