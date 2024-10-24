@@ -24,7 +24,7 @@ export default function Footer({ darkMode }) {
           className={`hover:underline hover:text-blue-${darkMode ? '400' : '600'} transition-colors duration-300`}
         >
           <FontAwesomeIcon icon={faMapLocationDot} style={{color: darkMode ? "#ff0000" : "#db0000",}} />
-          Location: Kenya, Nyeri, Kazi Building, along Kimathi Street
+          Location: Kenya, Nyeri, Lawnbull Arcade, along Kimathi Street
         </a>
       </div>
     </footer>
