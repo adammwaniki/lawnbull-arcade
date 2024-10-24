@@ -53,7 +53,7 @@ export const dummyCards = [
     {
       id: 4,
       image: "https://picsum.photos/seed/card8/400/300",
-      title: "Nyeri Bites Kitchen",
+      title: "Mashakura Kitchen",
       subtitle: "Street Food Reimagined",
       description: "Experience the soul of street cuisine elevated with a modern twist. Fresh ingredients, bold flavors, and authentic recipes served with urban flair.",
       paragraphs: [
