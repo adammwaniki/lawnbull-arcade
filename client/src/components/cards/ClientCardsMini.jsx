@@ -7,7 +7,7 @@ export default function ClientCardsMini({ image, title, subtitle, description, o
       <div className="aspect-w-16 aspect-h-9 mb-4">
         <img src={image} alt={title} className="w-full h-full object-cover rounded-md" />
       </div>
-      <h2 className="text-2xl font-playfair-display font-extrabold tracking-wide text-[#fff] mb-2">{title}</h2>
+      <h2 className="text-2xl font-playfair-display font-bold tracking-wide text-[#fff] mb-2">{title}</h2>
       <h3 className="text-lg font-playfair-display font-medium tracking-wide italic text-[#fff] mb-2">{subtitle}</h3>
       <p className="text-[#fff] mb-4">{description.slice(0, 64)}...</p>
       <button
