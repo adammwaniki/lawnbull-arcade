@@ -18,6 +18,74 @@ export const dummyCards = [
     },
     {
       id: 2,
+      image: "https://picsum.photos/seed/card7/400/300",
+      title: "Lens & Light Studio",
+      subtitle: "Capture Your Perfect Moment",
+      description: "Professional photography studio equipped with state-of-the-art gear and creative backdrops for portraits, events, and commercial shoots.",
+      paragraphs: [
+        "Step into Lens & Light Studio, where every shot tells a story. Our professional photographers blend technical expertise with artistic vision to create stunning images that exceed expectations.",
+        "Our versatile studio space features multiple shooting areas, premium lighting equipment, and an extensive collection of backdrops. From corporate headshots to family portraits, fashion photography to product shoots, we deliver excellence in every frame.",
+        "Experience our signature service with complimentary consultation, same-day photo previews, and expert retouching. Let us transform your special moments into timeless masterpieces!"
+      ],
+      additionalImages: [
+        "https://picsum.photos/seed/studio1/400/300",
+        "https://picsum.photos/seed/studio2/400/300",
+        "https://picsum.photos/seed/studio3/400/300"
+      ]
+    },
+    {
+      id: 3,
+      image: "https://picsum.photos/seed/card6/400/300",
+      title: "Glamour Suite",
+      subtitle: "Your Beauty Sanctuary",
+      description: "Experience luxury pampering in our state-of-the-art beauty parlor. From head to toe, let our experts enhance your natural radiance.",
+      paragraphs: [
+        "Welcome to Glamour Suite, where beauty meets relaxation. Our skilled professionals use premium products and cutting-edge techniques to bring out your best features and boost your confidence.",
+        "Indulge in our comprehensive range of services including expert hair styling, professional makeup artistry, rejuvenating facials, and precision nail care. Each treatment is personalized to match your unique style and preferences.",
+        "Step into our modern, elegant space designed for your comfort. Whether it's for a special occasion or your regular beauty routine, our team ensures you leave feeling refreshed, beautiful, and ready to conquer the world!"
+      ],
+      additionalImages: [
+        "https://picsum.photos/seed/beauty1/400/300",
+        "https://picsum.photos/seed/beauty2/400/300",
+        "https://picsum.photos/seed/beauty3/400/300"
+      ]
+    },
+    {
+      id: 4,
+      image: "https://picsum.photos/seed/card8/400/300",
+      title: "Nyeri Bites Kitchen",
+      subtitle: "Street Food Reimagined",
+      description: "Experience the soul of street cuisine elevated with a modern twist. Fresh ingredients, bold flavors, and authentic recipes served with urban flair.",
+      paragraphs: [
+        "Welcome to Nyeri Bites, where street food meets culinary artistry. Our open kitchen brings the excitement of street cooking to life, featuring a fusion of local and international flavors that dance on your palate.",
+        "Watch our skilled chefs craft each dish with precision and passion. From sizzling grills to aromatic spices, we combine traditional techniques with contemporary presentation. Our menu changes daily to showcase the freshest seasonal ingredients.",
+        "Join us for quick bites or leisurely meals in our vibrant dining space. Whether it's our famous street tacos, gourmet burgers, or signature noodle bowls, every dish tells a story of flavor and innovation!"
+      ],
+      additionalImages: [
+        "https://picsum.photos/seed/food1/400/300",
+        "https://picsum.photos/seed/food2/400/300",
+        "https://picsum.photos/seed/food3/400/300"
+      ]
+    },
+    {
+      id: 5,
+      image: "https://picsum.photos/seed/card5/400/300",
+      title: "Retro Revival",
+      subtitle: "Classic Arcade Experience",
+      description: "Journey back in time with our collection of restored vintage arcade machines and reimagined classic games.",
+      paragraphs: [
+        "Step into our Retro Revival corner, where the golden age of gaming comes alive. Experience the authentic feel of classic arcade cabinets, complete with original joysticks and buttons that defined an era.",
+        "Our carefully curated collection features both pristinely restored original machines and modern reimaginings of beloved classics. From pixelated adventures to 8-bit soundtracks, every detail captures the magic of retro gaming.",
+        "Whether you're a nostalgic veteran or a curious newcomer, our Retro Revival section offers an authentic arcade experience that bridges past and present. High scores await!"
+      ],
+      additionalImages: [
+        "https://picsum.photos/seed/retro1/400/300",
+        "https://picsum.photos/seed/retro2/400/300",
+        "https://picsum.photos/seed/retro3/400/300"
+      ]
+    },    
+    {
+      id: 6,
       image: "https://picsum.photos/seed/card2/400/300",
       title: "VR Adventure",
       subtitle: "Immersive Virtual Reality",
@@ -32,40 +100,8 @@ export const dummyCards = [
         "https://picsum.photos/seed/vr2/400/300",
         "https://picsum.photos/seed/vr3/400/300"
       ]
-    },
-    {
-      id: 3,
-      image: "https://picsum.photos/seed/card3/400/300",
-      title: "Multiplayer Mania",
-      subtitle: "Competitive Gaming Arenas",
-      description: "Compete with friends or challenge global players. Our multiplayer games offer intense, strategy-rich experiences.",
-      paragraphs: [
-        "Welcome to Multiplayer Mania, where competition meets camaraderie. Our state-of-the-art multiplayer arenas are designed to test your skills against friends and foes from around the world.",
-        "From fast-paced shooters to intricate strategy games, we offer a diverse range of multiplayer experiences. Each game is balanced for fair play and optimized for smooth online performance.",
-        "Join tournaments, climb global leaderboards, or simply enjoy casual matches with friends. With Multiplayer Mania, every session is a chance to prove your gaming prowess!"
-      ],
-      additionalImages: [
-        "https://picsum.photos/seed/multi1/400/300",
-        "https://picsum.photos/seed/multi2/400/300",
-        "https://picsum.photos/seed/multi3/400/300"
-      ]
-    },
-    {
-      id: 4,
-      image: "https://picsum.photos/seed/card3/400/300",
-      title: "Multiplayer Mania",
-      subtitle: "Competitive Gaming Arenas",
-      description: "Compete with friends or challenge global players. Our multiplayer games offer intense, strategy-rich experiences.",
-      paragraphs: [
-        "Welcome to Multiplayer Mania, where competition meets camaraderie. Our state-of-the-art multiplayer arenas are designed to test your skills against friends and foes from around the world.",
-        "From fast-paced shooters to intricate strategy games, we offer a diverse range of multiplayer experiences. Each game is balanced for fair play and optimized for smooth online performance.",
-        "Join tournaments, climb global leaderboards, or simply enjoy casual matches with friends. With Multiplayer Mania, every session is a chance to prove your gaming prowess!"
-      ],
-      additionalImages: [
-        "https://picsum.photos/seed/multi1/400/300",
-        "https://picsum.photos/seed/multi2/400/300",
-        "https://picsum.photos/seed/multi3/400/300"
-      ]
     }
+    
+    
   ];
   
