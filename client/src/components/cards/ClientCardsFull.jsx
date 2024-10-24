@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 export default function ClientCardsFull({ image, title, subtitle, paragraphs, additionalImages, onClose }) {
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50" onClick={onClose}>
+    <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-85" onClick={onClose}>
       <div className="bg-[#17163e] bg-opacity-80 p-8 rounded-lg shadow-lg w-full h-full md:w-4/5 md:h-4/5 overflow-y-auto relative" onClick={(e) => e.stopPropagation()}>
         <button 
           onClick={onClose}
