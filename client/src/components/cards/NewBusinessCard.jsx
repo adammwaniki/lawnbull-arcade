@@ -10,35 +10,28 @@ export default function NewBusinessCard() {
 
     
     const [formData, setFormData] = useState({
-        name: '',
-        subtitle: '',
-        paragraphs: ['', '', ''],
-        mainImage: null,
-        additionalImages: [],
-    });
-
-    const onDrop = (acceptedFiles, field) => {
-        if (acceptedFiles.length > 0) {
-            // Handle file upload
-            if (field === 'mainImage') {
-                setFormData({ ...formData, [field]: acceptedFiles[0] });
-            } else {
-                setFormData({ ...formData, [field]: [...formData[field], ...acceptedFiles] });
-            }
-        } else {
-            // Handle URL input
-            const url = window.prompt("Enter image URL:");
-            if (url) {
-                if (field === 'mainImage') {
-                    setFormData({ ...formData, [field]: { url } });
-                } else {
-                    setFormData({ ...formData, [field]: [...formData[field], { url }] });
-                }
-            }
-        }
-    };
+      name: '',
+      subtitle: '',
+      paragraphs: ['', '', ''],
+      mainImage: null,
+      additionalImage1: null,
+      additionalImage2: null,
+      additionalImage3: null
+     });
     
-      
+     const onDrop = (acceptedFiles, field) => {
+          if (acceptedFiles.length > 0) {
+              setFormData({ ...formData, [field]: acceptedFiles[0] });
+          } else {
+              const url = window.prompt("Enter image URL:");
+              if (url && url.trim()) {
+                  setFormData({ ...formData, [field]: { url: url.trim() } });
+              }
+          }
+      };
+  
+  
+
 
       const { getRootProps: getMainImageProps, getInputProps: getMainImageInputProps } = useDropzone({
         onDrop: (files) => onDrop(files, 'mainImage'),
@@ -48,12 +41,26 @@ export default function NewBusinessCard() {
     });
     
 
-    const { getRootProps: getAdditionalImagesProps, getInputProps: getAdditionalImagesInputProps } = useDropzone({
-        onDrop: (files) => onDrop(files, 'additionalImages'),
-        accept: {
-            'image/*': ['.jpeg', '.jpg', '.png', '.gif']
-        },
-        multiple: true,
+    // Create three separate dropzone hooks for additional images
+    const { getRootProps: getAdditionalImage1Props, getInputProps: getAdditionalImage1InputProps } = useDropzone({
+      onDrop: (files) => onDrop(files, 'additionalImage1'),
+      accept: {
+          'image/*': ['.jpeg', '.jpg', '.png', '.gif']
+      }
+    });
+
+    const { getRootProps: getAdditionalImage2Props, getInputProps: getAdditionalImage2InputProps } = useDropzone({
+      onDrop: (files) => onDrop(files, 'additionalImage2'),
+      accept: {
+          'image/*': ['.jpeg', '.jpg', '.png', '.gif']
+      }
+    });
+
+    const { getRootProps: getAdditionalImage3Props, getInputProps: getAdditionalImage3InputProps } = useDropzone({
+      onDrop: (files) => onDrop(files, 'additionalImage3'),
+      accept: {
+          'image/*': ['.jpeg', '.jpg', '.png', '.gif']
+      }
     });
     
 
@@ -67,7 +74,6 @@ export default function NewBusinessCard() {
           setFormData({ ...formData, [name]: value });
         }
       };
-      
 
     useEffect(() => {
         const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -83,71 +89,97 @@ export default function NewBusinessCard() {
         };
       }, []);
     
-      //const toggleDarkMode = () => setDarkMode(!darkMode); currently not implementing the same navbar for admin as users
-
       const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-          // Client-side validation
-          if (!formData.name || !formData.name.trim()) {
-            throw new Error('Business name is required');
-          }
-          if (!formData.subtitle || !formData.subtitle.trim()) {
-            throw new Error('Business subtitle is required');
-          }
-      
-          const formDataToSend = new FormData();
-          formDataToSend.append('name', formData.name.trim());
-          formDataToSend.append('subtitle', formData.subtitle.trim());
-          formData.paragraphs.forEach((paragraph, index) => {
-            formDataToSend.append(`paragraph${index + 1}`, paragraph.trim());
-          });
-          if (formData.mainImage) {
-            if (formData.mainImage.url) {
-              formDataToSend.append('mainImageUrl', formData.mainImage.url);
-            } else {
-              formDataToSend.append('mainImage', formData.mainImage);
-            }
-          }
-          formData.additionalImages.forEach((image, index) => {
-            if (image.url) {
-              formDataToSend.append(`additionalImageUrl${index + 1}`, image.url);
-            } else {
-              formDataToSend.append(`additionalImage${index + 1}`, image);
-            }
-          });
-      
-          const token = localStorage.getItem('token');
-
-      
-          const response = await fetch(`${import.meta.env.VITE_API_URL}/business`, {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${token}`
-            },
-            body: formDataToSend,
-          });
-      
-          if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || 'An error occurred while creating the business');
-          }
-      
-          const result = await response.json();
-          console.log('Business created:', result);
-          navigate('/admin/dashboard');
-        } catch (error) {
-          console.error('Error submitting form:', error);
-          alert(`Error: ${error.message}`);
+        
+        // Validate required fields
+        const name = formData.name?.trim();
+        const subtitle = formData.subtitle?.trim();
+        
+        if (!name || !subtitle) {
+            alert('Name and subtitle are required fields');
+            return;
         }
-      };   
-      
+        
+        const formDataToSend = new FormData();
+        formDataToSend.append('name', name);
+        formDataToSend.append('subtitle', subtitle);
+        
+        // Only append paragraphs if they exist
+        if (formData.paragraphs[0]) formDataToSend.append('paragraph1', formData.paragraphs[0].trim());
+        if (formData.paragraphs[1]) formDataToSend.append('paragraph2', formData.paragraphs[1].trim());
+        if (formData.paragraphs[2]) formDataToSend.append('paragraph3', formData.paragraphs[2].trim());
+    
+        // Handle image uploads with proper checks
+        if (formData.mainImage) {
+            if (formData.mainImage instanceof File) {
+                formDataToSend.append('mainImage', formData.mainImage);
+            } else if (formData.mainImage.url) {
+                formDataToSend.append('mainImageUrl', formData.mainImage.url);
+            }
+        }
+        
+        if (formData.additionalImage1) {
+          if (formData.additionalImage1 instanceof File) {
+              formDataToSend.append('additionalImage1', formData.additionalImage1);
+          } else if (formData.additionalImage1.url) {
+              formDataToSend.append('additionalImageUrl1', formData.additionalImage1.url);
+          }
+        }
 
-    const removeImage = (index, field) => {
-        const updatedImages = [...formData[field]];
-        updatedImages.splice(index, 1);
-        setFormData({ ...formData, [field]: updatedImages });
+        if (formData.additionalImage2) {
+          if (formData.additionalImage2 instanceof File) {
+              formDataToSend.append('additionalImage2', formData.additionalImage2);
+          } else if (formData.additionalImage2.url) {
+              formDataToSend.append('additionalImageUrl2', formData.additionalImage2.url);
+          }
+        }
+
+        if (formData.additionalImage3) {
+          if (formData.additionalImage3 instanceof File) {
+              formDataToSend.append('additionalImage3', formData.additionalImage3);
+          } else if (formData.additionalImage3.url) {
+              formDataToSend.append('additionalImageUrl3', formData.additionalImage3.url);
+          }
+        }
+        // Logging the form data to the console for debugging
+        for (let pair of formDataToSend.entries()) {
+              console.log(pair[0] + ': ' + pair[1]); 
+          }
+          try {
+            const token = localStorage.getItem('token'); // Retrieve token from localStorage
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/business`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                credentials: 'include',
+                body: formDataToSend
+            });
+        
+            if (!response.ok) {
+                const errorData = await response.json();
+                if (response.status === 422) {
+                    alert(`Validation error: ${errorData.error}`);
+                } else {
+                    alert(`Error: ${errorData.error || 'Unknown error occurred'}`);
+                }
+                return;
+            }
+            
+            await response.json();
+            navigate('/admin/dashboard');
+        } catch (error) {
+            console.error('Error creating business card:', error);
+            alert('Failed to create business card. Please try again.');
+        }
       };
+    
+    
+
+      const removeImage = (index, field) => {
+        setFormData({ ...formData, [field]: null });
+    };
       
 
   return (
@@ -214,41 +246,113 @@ export default function NewBusinessCard() {
                     ))}
                 </div>
 
-                <div {...getAdditionalImagesProps()} className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                    <input {...getAdditionalImagesInputProps()} />
-                    {formData.additionalImages.map((img, index) => (
-                        <div key={index} className="relative w-full h-48 bg-gray-200 rounded-md flex items-center justify-center">
-                        <img 
-                            src={img.url || URL.createObjectURL(img)} 
-                            alt={`Additional image ${index + 1}`} 
-                            className="w-full h-full object-cover rounded-md" 
-                        />
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                                        {/* Additional Image 1 */}
+                                        <div className="flex flex-col gap-2">
+                        <div {...getAdditionalImage1Props()} className="relative w-full h-48 border-2 border-dashed border-gray-300 rounded-md flex items-center justify-center cursor-pointer">
+                        <input {...getAdditionalImage1InputProps()} />
+                            {formData.additionalImage1 ? (
+                                <>
+                                    <img
+                                        src={formData.additionalImage1.url || URL.createObjectURL(formData.additionalImage1)}
+                                        alt="Additional image 1"
+                                        className="w-full h-full object-cover rounded-md"
+                                    />
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            removeImage(0, 'additionalImage1');
+                                        }}
+                                        className="absolute top-2 right-2 w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center text-white font-bold"
+                                    >
+                                        X
+                                    </button>
+                                </>
+                            ) : (
+                                <p className="text-gray-400">Add image 1</p>
+                            )}
+                        </div>
                         <button
-                            onClick={(e) => {
-                            e.stopPropagation();
-                            removeImage(index, 'additionalImages');
-                            }}
-                            className="absolute top-2 right-2 w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center text-white font-bold"
+                            type="button"
+                            onClick={() => onDrop([], 'additionalImage1')}
+                            className="bg-blue-500 text-white py-2 px-4 rounded"
                         >
-                            X
+                            Enter Image 1 URL
                         </button>
+                    </div>
+
+                    {/* Additional Image 2 */}
+                    <div className="flex flex-col gap-2">
+                        <div {...getAdditionalImage2Props()} className="relative w-full h-48 border-2 border-dashed border-gray-300 rounded-md flex items-center justify-center cursor-pointer">
+                        <input {...getAdditionalImage2InputProps()} />
+                            {formData.additionalImage2 ? (
+                                <>
+                                    <img
+                                        src={formData.additionalImage2.url || URL.createObjectURL(formData.additionalImage2)}
+                                        alt="Additional image 2"
+                                        className="w-full h-full object-cover rounded-md"
+                                    />
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            removeImage(0, 'additionalImage2');
+                                        }}
+                                        className="absolute top-2 right-2 w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center text-white font-bold"
+                                    >
+                                        X
+                                    </button>
+                                </>
+                            ) : (
+                                <p className="text-gray-400">Add image 2</p>
+                            )}
                         </div>
-                    ))}
-                    {formData.additionalImages.length < 3 && (
-                        <div className="w-full h-48 border-2 border-dashed border-gray-300 rounded-md flex items-center justify-center cursor-pointer">
-                        <p className="text-gray-400 text-center xl:text-justify">Drag and drop 3 additional images here,<br/> or click to select files</p>
+                        <button
+                            type="button"
+                            onClick={() => onDrop([], 'additionalImage2')}
+                            className="bg-blue-500 text-white py-2 px-4 rounded"
+                        >
+                            Enter Image 2 URL
+                        </button>
+                    </div>
+
+                    {/* Additional Image 3 */}
+                    <div className="flex flex-col gap-2">
+                        <div {...getAdditionalImage3Props()} className="relative w-full h-48 border-2 border-dashed border-gray-300 rounded-md flex items-center justify-center cursor-pointer">
+                        <input {...getAdditionalImage3InputProps()} />
+                            {formData.additionalImage3 ? (
+                                <>
+                                    <img
+                                        src={formData.additionalImage3.url || URL.createObjectURL(formData.additionalImage3)}
+                                        alt="Additional image 3"
+                                        className="w-full h-full object-cover rounded-md"
+                                    />
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            removeImage(0, 'additionalImage3');
+                                        }}
+                                        className="absolute top-2 right-2 w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center text-white font-bold"
+                                    >
+                                        X
+                                    </button>
+                                </>
+                            ) : (
+                                <p className="text-gray-400">Add image 3</p>
+                            )}
                         </div>
-                    )}
+                        <button
+                            type="button"
+                            onClick={() => onDrop([], 'additionalImage3')}
+                            className="bg-blue-500 text-white py-2 px-4 rounded"
+                        >
+                            Enter Image 3 URL
+                        </button>
+                    </div>
                 </div>
-                <button
-                    type="button"
-                    onClick={() => onDrop([], 'additionalImages')}
-                    className="mb-6 bg-blue-500 text-white py-2 px-4 rounded"
-                >
-                    Enter Additional Image URL
-                </button>
+
                 <div className="flex justify-center space-x-10 mt-6">
                     <button
+                        type="button"
                         onClick={() => navigate('/admin/dashboard')}
                         className="bg-gradient-to-tl from-orange-500/80 from-10% via-yellow-500/80 via-30% to-red-500/80 to-90% text-white py-2 px-4 rounded-md font-semibold uppercase tracking-wide hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
                     >

@@ -22,9 +22,6 @@ app = Flask(__name__)
 app.config['JWT_SECRET_KEY'] = os.urandom(24)
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['CORS_HEADERS'] = 'Content-Type'
-app.config['CORS_ORIGINS'] = ["https://lawnbull-arcade.vercel.app", "http://localhost:5173"]
-app.config['CORS_SUPPORTS_CREDENTIALS'] = True
 
 
 metadata = MetaData(naming_convention={
@@ -39,8 +36,13 @@ CORS(app,
      origins=["https://lawnbull-arcade.vercel.app", "http://localhost:5173"],
      supports_credentials=True,
      allow_headers=['Content-Type', 'Authorization'],
-     methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+     methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+     expose_headers=['Access-Control-Allow-Origin'],
+     max_age=3600
 )
+
+
+
 
 api = Api(app)
 
