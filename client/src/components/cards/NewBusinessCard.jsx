@@ -90,92 +90,71 @@ export default function NewBusinessCard() {
       }, []);
     
       const handleSubmit = async (e) => {
-        e.preventDefault();
-        
-        // Validate required fields
-        const name = formData.name?.trim();
-        const subtitle = formData.subtitle?.trim();
-        
-        if (!name || !subtitle) {
-            alert('Name and subtitle are required fields');
-            return;
-        }
-        
-        const formDataToSend = new FormData();
-        formDataToSend.append('name', name);
-        formDataToSend.append('subtitle', subtitle);
-        
-        // Only append paragraphs if they exist
-        if (formData.paragraphs[0]) formDataToSend.append('paragraph1', formData.paragraphs[0].trim());
-        if (formData.paragraphs[1]) formDataToSend.append('paragraph2', formData.paragraphs[1].trim());
-        if (formData.paragraphs[2]) formDataToSend.append('paragraph3', formData.paragraphs[2].trim());
-    
-        // Handle image uploads with proper checks
-        if (formData.mainImage) {
-            if (formData.mainImage instanceof File) {
-                formDataToSend.append('mainImage', formData.mainImage);
-            } else if (formData.mainImage.url) {
-                formDataToSend.append('mainImageUrl', formData.mainImage.url);
-            }
-        }
-        
-        if (formData.additionalImage1) {
-          if (formData.additionalImage1 instanceof File) {
-              formDataToSend.append('additionalImage1', formData.additionalImage1);
-          } else if (formData.additionalImage1.url) {
-              formDataToSend.append('additionalImageUrl1', formData.additionalImage1.url);
-          }
-        }
-
-        if (formData.additionalImage2) {
-          if (formData.additionalImage2 instanceof File) {
-              formDataToSend.append('additionalImage2', formData.additionalImage2);
-          } else if (formData.additionalImage2.url) {
-              formDataToSend.append('additionalImageUrl2', formData.additionalImage2.url);
-          }
-        }
-
-        if (formData.additionalImage3) {
-          if (formData.additionalImage3 instanceof File) {
-              formDataToSend.append('additionalImage3', formData.additionalImage3);
-          } else if (formData.additionalImage3.url) {
-              formDataToSend.append('additionalImageUrl3', formData.additionalImage3.url);
-          }
-        }
-        // Logging the form data to the console for debugging
-        for (let pair of formDataToSend.entries()) {
-              console.log(pair[0] + ': ' + pair[1]); 
-          }
-          try {
-            const token = localStorage.getItem('token'); // Retrieve token from localStorage
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/business`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                },
-                credentials: 'include',
-                body: formDataToSend
-            });
-        
-            if (!response.ok) {
-                const errorData = await response.json();
-                if (response.status === 422) {
-                    alert(`Validation error: ${errorData.error}`);
-                } else {
-                    alert(`Error: ${errorData.error || 'Unknown error occurred'}`);
-                }
+            e.preventDefault();
+            
+            const formDataToSend = new FormData();
+            
+            // Validate and append required fields
+            const name = formData.name?.trim();
+            const subtitle = formData.subtitle?.trim();
+            
+            if (!name || !subtitle) {
+                alert('Name and subtitle are required fields');
                 return;
             }
             
-            await response.json();
-            navigate('/admin/dashboard');
-        } catch (error) {
-            console.error('Error creating business card:', error);
-            alert('Failed to create business card. Please try again.');
-        }
-      };
-    
-    
+            formDataToSend.append('name', name);
+            formDataToSend.append('subtitle', subtitle);
+            
+            // Handle paragraphs
+            formData.paragraphs.forEach((paragraph, index) => {
+                if (paragraph?.trim()) {
+                    formDataToSend.append(`paragraph${index + 1}`, paragraph.trim());
+                }
+            });
+        
+            // Handle image uploads with timeout
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+        
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/business`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    credentials: 'include',
+                    body: formDataToSend,
+                    signal: controller.signal
+                });
+        
+                clearTimeout(timeoutId);
+        
+                if (response.status === 422) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Validation failed');
+                }
+        
+                if (!response.ok) {
+                    throw new Error('Failed to create business');
+                }
+        
+                const data = await response.json();
+                console.log('Business created:', data);
+                navigate('/admin/dashboard');
+                
+            } catch (error) {
+                if (error.name === 'AbortError') {
+                    console.error('Request timed out');
+                    alert('Request timed out. Please try again.');
+                } else {
+                    console.error('Error:', error.message);
+                    alert(error.message);
+                }
+            }
+        };
+        
 
       const removeImage = (index, field) => {
         setFormData({ ...formData, [field]: null });

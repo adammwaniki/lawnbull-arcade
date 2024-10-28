@@ -27,7 +27,7 @@ class Business(db.Model, SerializerMixin):
     
     id = Column(Integer, primary_key=True)
     business_identifier = Column(String(32), unique=True, default=lambda: str(uuid.uuid4().hex), index=True, name='ix_business_identifier')
-    name = Column(String(50), index=True)
+    name = Column(String(255), index=True)
     subtitle = Column(String(255))
     main_image_url = Column(String(255))
     additional_image_url1 = Column(String(255))
