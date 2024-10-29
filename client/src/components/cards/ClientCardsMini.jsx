@@ -21,11 +21,11 @@ export default function ClientCardsMini({ image, title, subtitle, description, o
 }
 
 ClientCardsMini.propTypes = {
-  image: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  subtitle: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  onViewMore: PropTypes.func.isRequired,
+  image: PropTypes.string,
+  title: PropTypes.string,
+  subtitle: PropTypes.string,
+  description: PropTypes.string,
+  onViewMore: PropTypes.func,
 };
 /*
 // keeping this one for when I use an api with IDs so include id in the props

@@ -18,6 +18,7 @@ export default function NewBusinessCard() {
       additionalImage2: null,
       additionalImage3: null
      });
+     
     
      const onDrop = (acceptedFiles, field) => {
           if (acceptedFiles.length > 0) {
@@ -90,70 +91,69 @@ export default function NewBusinessCard() {
       }, []);
     
       const handleSubmit = async (e) => {
-            e.preventDefault();
+        e.preventDefault();
+        
+        const formDataToSend = new FormData();
+        
+        // Add basic fields with default values if empty
+        formDataToSend.append('name', formData.name || 'Untitled Business');
+        formDataToSend.append('subtitle', formData.subtitle || 'No subtitle provided');
+        
+        // Add paragraphs with default text
+        formData.paragraphs.forEach((paragraph, index) => {
+            formDataToSend.append(`paragraph${index + 1}`, paragraph || `Default paragraph ${index + 1}`);
+        });
+    
+        // Handle main image
+        if (formData.mainImage) {
+            if (formData.mainImage instanceof File) {
+                formDataToSend.append('mainImage', formData.mainImage);
+            } else if (formData.mainImage.url) {
+                formDataToSend.append('mainImageUrl', formData.mainImage.url);
+            }
+        } else {
+            formDataToSend.append('mainImageUrl', 'https://placeholder.com/business-default.jpg');
+        }
+    
+        // Handle additional images
+        ['additionalImage1', 'additionalImage2', 'additionalImage3'].forEach((imageField, index) => {
+            if (formData[imageField]) {
+                if (formData[imageField] instanceof File) {
+                    formDataToSend.append(`additionalImage${index + 1}`, formData[imageField]);
+                } else if (formData[imageField].url) {
+                    formDataToSend.append(`additionalImage${index + 1}Url`, formData[imageField].url);
+                }
+            }
+        });
+    
+        try {
+            const token = localStorage.getItem('accessToken');
             
-            const formDataToSend = new FormData();
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/business`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                body: formDataToSend
+            });
+    
+            const responseData = await response.json();
             
-            // Validate and append required fields
-            const name = formData.name?.trim();
-            const subtitle = formData.subtitle?.trim();
-            
-            if (!name || !subtitle) {
-                alert('Name and subtitle are required fields');
+            if (response.ok) {
+                console.log('Business created successfully:', responseData);
+                navigate('/admin/dashboard');
                 return;
             }
+    
+            throw new Error(responseData.error || responseData.msg || 'Server error');
             
-            formDataToSend.append('name', name);
-            formDataToSend.append('subtitle', subtitle);
-            
-            // Handle paragraphs
-            formData.paragraphs.forEach((paragraph, index) => {
-                if (paragraph?.trim()) {
-                    formDataToSend.append(`paragraph${index + 1}`, paragraph.trim());
-                }
-            });
-        
-            // Handle image uploads with timeout
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
-        
-            try {
-                const token = localStorage.getItem('token');
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/business`, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    },
-                    credentials: 'include',
-                    body: formDataToSend,
-                    signal: controller.signal
-                });
-        
-                clearTimeout(timeoutId);
-        
-                if (response.status === 422) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || 'Validation failed');
-                }
-        
-                if (!response.ok) {
-                    throw new Error('Failed to create business');
-                }
-        
-                const data = await response.json();
-                console.log('Business created:', data);
-                navigate('/admin/dashboard');
-                
-            } catch (error) {
-                if (error.name === 'AbortError') {
-                    console.error('Request timed out');
-                    alert('Request timed out. Please try again.');
-                } else {
-                    console.error('Error:', error.message);
-                    alert(error.message);
-                }
-            }
-        };
+        } catch (error) {
+            console.error('Submission error:', error);
+            alert(`Failed to create business: ${error.message}`);
+        }
+    };
+    
+    
         
 
       const removeImage = (index, field) => {

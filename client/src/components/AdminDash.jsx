@@ -128,20 +128,36 @@ export default function AdminDash() {
                     {filteredBusinesses.map(business => (
                         <ClientCardsMini
                             key={business.id}
-                            {...business}
+                            image={business.main_image_url || 'https://via.placeholder.com/300'}
+                            title={business.name || 'New Business'}
+                            description={business.subtitle || 'Business Description'}
                             onViewMore={() => setSelectedBusiness(business)}
                         />
                     ))}
                 </div>
 
+
                 {selectedBusiness && (
                     <ClientCardsFull
-                        {...selectedBusiness}
+                        image={selectedBusiness.main_image_url || 'https://via.placeholder.com/300'}
+                        title={selectedBusiness.name || 'Untitled Business'}
+                        subtitle={selectedBusiness.subtitle || "Default Catchphrase"}
+                        paragraphs={[
+                            selectedBusiness.paragraph1 || '',
+                            selectedBusiness.paragraph2 || '',
+                            selectedBusiness.paragraph3 || ''
+                        ]}
+                        additionalImages={[
+                            selectedBusiness.additional_image_url1,
+                            selectedBusiness.additional_image_url2, 
+                            selectedBusiness.additional_image_url3
+                        ].filter(Boolean)}
                         onClose={() => setSelectedBusiness(null)}
                         onUpdate={handleUpdateBusiness}
                         onDelete={() => handleDeleteBusiness(selectedBusiness.id)}
                     />
                 )}
+
 
                 <button
                     onClick={() => {

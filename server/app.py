@@ -80,44 +80,29 @@ def create_business():
         data = request.form
         files = request.files
 
-        # Validate required fields
-        required_fields = ['name', 'subtitle']
-        missing_fields = [field for field in required_fields if not data.get(field)]
-        if missing_fields:
-            return jsonify({'error': f"Missing required fields: {', '.join(missing_fields)}"}), 422
-
-        main_image_url = upload_file(files.get('mainImage')) or data.get('mainImageUrl')
-        additional_image_urls = []
-        
-        for i in range(1, 4):
-            file_key = f'additionalImage{i}'
-            url_key = f'additionalImageUrl{i}'
-            image_url = upload_file(files.get(file_key)) or data.get(url_key)
-            additional_image_urls.append(image_url)
-
+        # Create business directly without validation checks
         new_business = Business(
-            name=data['name'],
-            subtitle=data['subtitle'],
+            name=data.get('name', ''),
+            subtitle=data.get('subtitle', ''),
             paragraph1=data.get('paragraph1', ''),
             paragraph2=data.get('paragraph2', ''),
             paragraph3=data.get('paragraph3', ''),
-            main_image_url=main_image_url,
-            additional_image_url1=additional_image_urls[0],
-            additional_image_url2=additional_image_urls[1],
-            additional_image_url3=additional_image_urls[2],
+            main_image_url=upload_file(files.get('mainImage')) or data.get('mainImageUrl', ''),
+            additional_image_url1=upload_file(files.get('additionalImage1')) or data.get('additionalImage1Url', ''),
+            additional_image_url2=upload_file(files.get('additionalImage2')) or data.get('additionalImage2Url', ''),
+            additional_image_url3=upload_file(files.get('additionalImage3')) or data.get('additionalImage3Url', '')
         )
 
         db.session.add(new_business)
         db.session.commit()
 
-        return jsonify({'message': 'New business created!', 'business_id': new_business.id}), 201
+        return jsonify({
+            'message': 'Business created successfully!',
+            'business_id': new_business.id
+        }), 201
 
-    except UnprocessableEntity as e:
-        logging.error(f"Validation error: {str(e)}")
-        return jsonify({'error': str(e)}), 422
     except Exception as e:
-        logging.error(f"Error creating business: {str(e)}")
-        return jsonify({'error': 'An unexpected error occurred'}), 500
+        return jsonify({'error': str(e)}), 500
 
 
 
