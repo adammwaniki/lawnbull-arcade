@@ -1,15 +1,14 @@
-//import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-export default function ClientCardsMini({ image, title, subtitle, description, onViewMore }) {
+export default function ClientCardsMini({ main_image_url, name, subtitle, paragraph1 = '', onViewMore }) {
   return (
     <div className="bg-[#17163e] bg-opacity-90 p-6 rounded-lg shadow-lg max-w-sm mx-auto">
       <div className="aspect-w-16 aspect-h-9 mb-4">
-        <img src={image} alt={title} className="w-full h-full object-cover rounded-md" />
+        <img src={main_image_url} alt={name} className="w-full h-full object-cover rounded-md" />
       </div>
-      <h2 className="text-2xl font-playfair-display font-bold tracking-wide text-[#fff] mb-2">{title}</h2>
+      <h2 className="text-2xl font-playfair-display font-bold tracking-wide text-[#fff] mb-2">{name}</h2>
       <h3 className="text-lg font-playfair-display font-medium tracking-wide italic text-[#fff] mb-2">{subtitle}</h3>
-      <p className="text-[#fff] mb-4">{description.slice(0, 64)}...</p>
+      <p className="text-[#fff] mb-4">{paragraph1?.slice(0, 64)}...</p>
       <button
         onClick={onViewMore}
         className="w-full bg-gradient-to-r from-indigo-500/80 from-10% via-sky-500/80 via-30% to-emerald-500/80 to-90% text-white py-2 px-4 rounded-md font-arima text-lg font-extrabold uppercase tracking-wide hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 inline-block text-center"
@@ -21,19 +20,9 @@ export default function ClientCardsMini({ image, title, subtitle, description, o
 }
 
 ClientCardsMini.propTypes = {
-  image: PropTypes.string,
-  title: PropTypes.string,
+  main_image_url: PropTypes.string,
+  name: PropTypes.string,
   subtitle: PropTypes.string,
-  description: PropTypes.string,
+  paragraph1: PropTypes.string,
   onViewMore: PropTypes.func,
 };
-/*
-// keeping this one for when I use an api with IDs so include id in the props
-ClientCardsMini.propTypes = {
-  id: PropTypes.string.isRequired,
-  image: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  subtitle: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-};
-*/

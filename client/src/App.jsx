@@ -15,19 +15,46 @@ import ProtectedRoute from './components/ProtectedRoute'
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
+  const [loadingProgress, setLoadingProgress] = useState(0);
 
   useEffect(() => {
-    // Simulate loading time or use actual loading logic
-    const timer = setTimeout(() => {
-    setIsLoading(false);
-    }, 1500); // Adjust time as needed
-    
-    
-    return () => clearTimeout(timer);
-    }, []);
+    const loadEssentialData = async () => {
+      try {
+        // Initial API connection check
+        await fetch(`${import.meta.env.VITE_API_URL}/`);
+        setLoadingProgress(25);
+
+        // Load businesses data
+        await fetch(`${import.meta.env.VITE_API_URL}/businesses`);
+        setLoadingProgress(50);
+
+        // Load static assets and animations
+        await Promise.all([
+          import('./assets/bull-flexing-animation.json'),
+          import('./assets/online-marketing-animation.json')
+        ]);
+        setLoadingProgress(75);
+
+        // Simulate final loading steps with a small delay for smooth transition
+        await new Promise(resolve => setTimeout(resolve, 800));
+        setLoadingProgress(100);
+
+        // Complete loading
+        setTimeout(() => setIsLoading(false), 200);
+
+      } catch (error) {
+        console.error('Loading failed:', error);
+        // Show error state in LoadingPage
+        setIsLoading(false);
+      }
+    };
+
+    loadEssentialData();
+  }, []);
+
 
   if (isLoading) {
-    return <LoadingPage isLoading={isLoading} />;
+    return <LoadingPage isLoading={isLoading} progress={loadingProgress} />;
   }
 
   return (

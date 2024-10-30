@@ -30,16 +30,38 @@ export default function MarketingPage() {
     };
   }, []);
 
-  const fetchCards = async () => {
-    // Simulating API call with setTimeout
-    setTimeout(() => {
-      setCards(dummyCards);
-    }, 1000);
-  };
+  // Update the fetchCards function to use the API
+const fetchCards = async () => {
+  try {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/businesses`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch businesses');
+    }
+    const data = await response.json();
+    setCards(data);
+  } catch (error) {
+    console.error('Error fetching businesses:', error);
+    // Fallback to dummy data in case of error
+    setCards(dummyCards);
+  }
+};
 
-  const handleViewMore = (card) => {
-    setSelectedCard(card);
+
+const handleViewMore = (card) => {
+  const business = {
+    main_image_url: card.main_image_url,
+    name: card.name,
+    subtitle: card.subtitle,
+    paragraph1: card.paragraph1,
+    paragraph2: card.paragraph2,
+    paragraph3: card.paragraph3,
+    additional_image_url1: card.additional_image_url1,
+    additional_image_url2: card.additional_image_url2,
+    additional_image_url3: card.additional_image_url3
   };
+  setSelectedCard(business);
+};
+
 
   const handleCloseFullCard = () => {
     setSelectedCard(null);
@@ -77,8 +99,12 @@ export default function MarketingPage() {
             </div>
           </div>
           {selectedCard && (
-            <ClientCardsFull {...selectedCard} onClose={handleCloseFullCard} />
+            <ClientCardsFull 
+              business={selectedCard} 
+              onClose={handleCloseFullCard} 
+            />
           )}
+
         </div>
         <div className="relative z-10">
           <Footer darkMode={darkMode} />
