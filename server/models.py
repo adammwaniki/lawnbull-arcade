@@ -47,4 +47,21 @@ class BlacklistedToken(db.Model):
     created_at = Column(DateTime, nullable=False, default=func.now())
     def __repr__(self):
         return f'<BlacklistedToken (id={self.id}, jti={self.jti}, created_at={self.created_at})>'
+    
+class UserActionLog(db.Model, SerializerMixin):
+    __tablename__ = 'user_action_log'
+    
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    action_type = Column(String(50))  # CREATE, UPDATE, DELETE
+    target_model = Column(String(50))  # Business, User, etc.
+    target_id = Column(String(50))
+    details = Column(Text)
+    timestamp = Column(DateTime, default=func.now())
+    
+    user = relationship('User', backref='action_logs')
+    
+    def __repr__(self):
+        return f'<UserActionLog (user_id={self.user_id}, action={self.action_type}, target={self.target_model})>'
+
 

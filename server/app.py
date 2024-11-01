@@ -11,7 +11,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt, create_a
 
 # Local imports
 from config import (app, api, jwt, Resource, db, os)
-from models import User, Business, BlacklistedToken
+from models import User, Business, BlacklistedToken, UserActionLog
 
 # Configure Cloudinary
 cloudinary.config(
@@ -32,6 +32,19 @@ def upload_file(file):
 def home():
     return jsonify({'message': 'Welcome to the Lawnbull Arcade API'}), 200
 
+def log_user_action(action_type, target_model, target_id, details=None):
+    current_user_id = get_jwt_identity()
+    log_entry = UserActionLog(
+        user_id=current_user_id,
+        action_type=action_type,
+        target_model=target_model,
+        target_id=str(target_id),
+        details=details
+    )
+    db.session.add(log_entry)
+    db.session.commit()
+
+
 
 @app.route('/user', methods=['POST'])
 def create_user():
@@ -40,7 +53,9 @@ def create_user():
     new_user = User(public_id=str(uuid.uuid4()), username=data['username'], password=hashed_password, email=data['email'], admin=False)
     db.session.add(new_user)
     db.session.commit()
+    log_user_action('CREATE', 'User', new_user.public_id, f"Created user: {new_user.username}")
     return jsonify({'message': 'New user created!'}), 201
+
 
 @app.route('/user/<public_id>', methods=['GET'])
 @jwt_required()
@@ -61,6 +76,7 @@ def update_user(public_id):
     user.username = data.get('username', user.username)
     user.email = data.get('email', user.email)
     db.session.commit()
+    log_user_action('UPDATE', 'User', user.public_id, f"Updated user: {user.username}")
     return jsonify({'message': 'User has been updated!'}), 200
 
 @app.route('/user/<public_id>', methods=['DELETE'])
@@ -69,8 +85,10 @@ def delete_user(public_id):
     user = User.query.filter_by(public_id=public_id).first()
     if not user:
         return jsonify({'message': 'No user found!'}), 404
+    username = user.username  # Store before deletion for logging
     db.session.delete(user)
     db.session.commit()
+    log_user_action('DELETE', 'User', public_id, f"Deleted user: {username}")
     return jsonify({'message': 'The user has been deleted!'}), 200
 
 @app.route('/business', methods=['POST'])
@@ -80,7 +98,6 @@ def create_business():
         data = request.form
         files = request.files
 
-        # Create business directly without validation checks
         new_business = Business(
             name=data.get('name', ''),
             subtitle=data.get('subtitle', ''),
@@ -95,6 +112,9 @@ def create_business():
 
         db.session.add(new_business)
         db.session.commit()
+
+        # Log the action
+        log_user_action('CREATE', 'Business', new_business.id, f"Created business: {new_business.name}")
 
         return jsonify({
             'message': 'Business created successfully!',
@@ -136,11 +156,11 @@ def update_business(id):
                        data.get(f'additionalImage{i}Url'))
 
         db.session.commit()
+        log_user_action('UPDATE', 'Business', id, f"Updated business: {business.name}")
         return jsonify({
             'message': 'Business updated successfully',
             'business': business.to_dict()
         }), 200
-
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': str(e)}), 422
@@ -151,8 +171,10 @@ def update_business(id):
 @jwt_required()
 def delete_business(id):
     business = Business.query.get_or_404(id)
+    business_name = business.name  # Store before deletion for logging
     db.session.delete(business)
     db.session.commit()
+    log_user_action('DELETE', 'Business', id, f"Deleted business: {business_name}")
     return jsonify({'message': 'The business has been deleted!'}), 200
 
 @app.route('/businesses', methods=['GET'])
@@ -210,6 +232,7 @@ def promote_user(public_id):
         return jsonify({'message': 'No user found!'}), 404
     user.admin = True
     db.session.commit()
+    log_user_action('UPDATE', 'User', public_id, f"Promoted user to admin: {user.username}")
     return jsonify({'message': 'The user has been promoted to admin!'}), 200
 
 
@@ -250,6 +273,25 @@ class TokenRefresh(Resource):
         return {'access_token': new_access_token}, 200
 
 api.add_resource(TokenRefresh, '/token/refresh', endpoint='token_refresh')
+
+@app.route('/action-logs', methods=['GET'])
+@jwt_required()
+def get_action_logs():
+    claims = get_jwt()
+    if not claims.get('isAdmin'):
+        return jsonify({'message': 'Admin privilege required!'}), 403
+        
+    logs = UserActionLog.query.order_by(UserActionLog.timestamp.desc()).all()
+    return jsonify([{
+        'id': log.id,
+        'user_id': log.user_id,
+        'action_type': log.action_type,
+        'target_model': log.target_model,
+        'target_id': log.target_id,
+        'details': log.details,
+        'timestamp': log.timestamp.isoformat()
+    } for log in logs]), 200
+
 
 
 if __name__ == '__main__':
