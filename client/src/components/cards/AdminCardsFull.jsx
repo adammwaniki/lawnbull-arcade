@@ -15,6 +15,8 @@ export default function AdminCardsFull({
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedBusiness, setEditedBusiness] = useState(business);
+  const [isLoading, setIsLoading] = useState(false);
+
 
   const onDrop = (acceptedFiles, field) => {
         if (acceptedFiles.length > 0) {
@@ -32,9 +34,11 @@ export default function AdminCardsFull({
             }
         }
     };
-
-const handleUpdate = async (editedBusiness) => {
-  const formData = new FormData();
+    
+    // Modifying the handleUpdate function to handle loading state
+    const handleUpdate = async (editedBusiness) => {
+      setIsLoading(true);
+      const formData = new FormData();
   
   // Add basic fields
   Object.keys(editedBusiness).forEach(key => {
@@ -82,6 +86,8 @@ const handleUpdate = async (editedBusiness) => {
   } catch (error) {
     console.error('Update error:', error);
     throw error;
+  } finally {
+    setIsLoading(false);
   }
 };
 
@@ -280,6 +286,11 @@ const handleUpdate = async (editedBusiness) => {
           </button>
         </div>
       </div>
+      {isLoading && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+          </div>
+      )}
     </div>
   );
 }
