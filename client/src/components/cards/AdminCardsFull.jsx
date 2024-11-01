@@ -75,7 +75,7 @@ export default function AdminCardsFull({
       <div className="bg-[#17163e] bg-opacity-80 p-8  shadow-lg w-full h-full md:w-4/5 md:h-[90vh] overflow-y-auto relative mb-24 md:mb-12 mt-6" onClick={(e) => e.stopPropagation()}>
       <button 
             onClick={onClose}
-            className="absolute top-3 right-2 bg-red-300 hover:bg-rose-600 text-slate-900 font-playfair-display tracking-wide font-semibold flex items-center justify-center rounded-2xl  focus:outline-none px-4 py-2"
+            className="absolute top-3 right-2 bg-red-300 hover:bg-rose-600 text-slate-900 font-playfair-display tracking-wide font-semibold flex items-center justify-center rounded-2xl  focus:outline-none px-4 py-2 z-50"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
