@@ -47,60 +47,30 @@ export default function AdminDash() {
     };
 
     const handleUpdateBusiness = async (updatedBusiness) => {
-        const formDataToSend = new FormData();
-        
-        // Add basic fields with default values if empty
-        formDataToSend.append('name', updatedBusiness.name || 'Untitled Business');
-        formDataToSend.append('subtitle', updatedBusiness.subtitle || 'No subtitle provided');
-        formDataToSend.append('paragraph1', updatedBusiness.paragraph1 || 'Default paragraph 1');
-        formDataToSend.append('paragraph2', updatedBusiness.paragraph2 || 'Default paragraph 2');
-        formDataToSend.append('paragraph3', updatedBusiness.paragraph3 || 'Default paragraph 3');
-    
-        // Handle main image - matching NewBusinessCard.jsx logic
-        if (updatedBusiness.main_image_url) {
-            if (updatedBusiness.main_image_url instanceof File) {
-                formDataToSend.append('mainImage', updatedBusiness.main_image_url);
-            } else if (typeof updatedBusiness.main_image_url === 'string') {
-                formDataToSend.append('mainImageUrl', updatedBusiness.main_image_url);
-            }
-        }
-    
-        // Handle additional images - matching NewBusinessCard.jsx logic
-        ['additional_image_url1', 'additional_image_url2', 'additional_image_url3'].forEach((imageField, index) => {
-            if (updatedBusiness[imageField]) {
-                if (updatedBusiness[imageField] instanceof File) {
-                    formDataToSend.append(`additionalImage${index + 1}`, updatedBusiness[imageField]);
-                } else if (typeof updatedBusiness[imageField] === 'string') {
-                    formDataToSend.append(`additionalImage${index + 1}Url`, updatedBusiness[imageField]);
-                }
-            }
-        });
-    
         try {
-            const token = localStorage.getItem('accessToken');
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/business/${updatedBusiness.id}`, {
-                method: 'PUT',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                },
-                body: formDataToSend
-            });
-    
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Failed to update business');
-            }
-    
-            const responseData = await response.json();
-            console.log('Business updated successfully:', responseData);
-            fetchBusinesses();
-            return responseData;
-    
+          const token = localStorage.getItem('accessToken');
+          const response = await fetch(`${import.meta.env.VITE_API_URL}/business/${updatedBusiness.id}`, {
+            method: 'PATCH',  // Changed from PUT to PATCH
+            headers: {
+              'Authorization': `Bearer ${token}`
+            },
+            body: updatedBusiness
+          });
+      
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+      
+          const data = await response.json();
+          setBusinesses(businesses.map(business => 
+            business.id === updatedBusiness.id ? data.business : business
+          ));
         } catch (error) {
-            console.error('Update error:', error);
-            throw error;
+          console.error('Update error:', error);
+          throw error;
         }
-    };    
+      };
+      
     
 
     const handleViewMore = (business) => {

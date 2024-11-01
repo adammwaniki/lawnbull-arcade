@@ -36,31 +36,33 @@ export default function AdminCardsFull({
 const handleUpdate = async (editedBusiness) => {
   const formData = new FormData();
   
-  // Add text fields
-  formData.append('name', editedBusiness.name);
-  formData.append('subtitle', editedBusiness.subtitle);
-  formData.append('paragraph1', editedBusiness.paragraph1);
-  formData.append('paragraph2', editedBusiness.paragraph2);
-  formData.append('paragraph3', editedBusiness.paragraph3);
+  // Add basic fields
+  Object.keys(editedBusiness).forEach(key => {
+    if (editedBusiness[key] && typeof editedBusiness[key] !== 'object') {
+      formData.append(key, editedBusiness[key]);
+    }
+  });
   
-  // Handle main image
+  // Handle images specifically
   if (editedBusiness.main_image_url instanceof File) {
     formData.append('mainImage', editedBusiness.main_image_url);
-  } else {
+  } else if (editedBusiness.main_image_url) {
     formData.append('mainImageUrl', editedBusiness.main_image_url);
   }
 
   // Handle additional images
-  ['additional_image_url1', 'additional_image_url2', 'additional_image_url3'].forEach((field, index) => {
+  for (let i = 1; i <= 3; i++) {
+    const field = `additional_image_url${i}`;
     if (editedBusiness[field] instanceof File) {
-      formData.append(`additionalImage${index + 1}`, editedBusiness[field]);
-    } else {
-      formData.append(`additionalImage${index + 1}Url`, editedBusiness[field]);
+      formData.append(`additionalImage${i}`, editedBusiness[field]);
+    } else if (editedBusiness[field]) {
+      formData.append(`additionalImage${i}Url`, editedBusiness[field]);
     }
-  });
+  }
 
+  const token = localStorage.getItem('accessToken'); // Note: changed from 'access_token'
+  
   try {
-    const token = localStorage.getItem('access_token');
     const response = await fetch(`${import.meta.env.VITE_API_URL}/business/${editedBusiness.id}`, {
       method: 'PATCH',
       headers: {
@@ -68,12 +70,18 @@ const handleUpdate = async (editedBusiness) => {
       },
       body: formData
     });
-    
-    const result = await response.json();
-    onUpdate(result.business);
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to update business');
+    }
+
+    const data = await response.json();
+    onUpdate(data.business);
     setIsEditing(false);
   } catch (error) {
-    console.error('Error updating business:', error);
+    console.error('Update error:', error);
+    throw error;
   }
 };
 

@@ -105,7 +105,6 @@ def create_business():
         return jsonify({'error': str(e)}), 500
 
 
-
 @app.route('/business/<int:id>', methods=['PATCH'])
 @jwt_required()
 def update_business(id):
@@ -114,26 +113,37 @@ def update_business(id):
         data = request.form
         files = request.files
 
-        # Update business directly without validation checks
-        business.name = data.get('name', business.name)
-        business.subtitle = data.get('subtitle', business.subtitle)
-        business.paragraph1 = data.get('paragraph1', business.paragraph1)
-        business.paragraph2 = data.get('paragraph2', business.paragraph2)
-        business.paragraph3 = data.get('paragraph3', business.paragraph3)
-        business.main_image_url = upload_file(files.get('mainImage')) or data.get('mainImageUrl', business.main_image_url)
-        business.additional_image_url1 = upload_file(files.get('additionalImage1')) or data.get('additionalImage1Url', business.additional_image_url1)
-        business.additional_image_url2 = upload_file(files.get('additionalImage2')) or data.get('additionalImage2Url', business.additional_image_url2)
-        business.additional_image_url3 = upload_file(files.get('additionalImage3')) or data.get('additionalImage3Url', business.additional_image_url3)
+        # Update text fields if provided
+        if data.get('name'): business.name = data.get('name')
+        if data.get('subtitle'): business.subtitle = data.get('subtitle')
+        if data.get('paragraph1'): business.paragraph1 = data.get('paragraph1')
+        if data.get('paragraph2'): business.paragraph2 = data.get('paragraph2')
+        if data.get('paragraph3'): business.paragraph3 = data.get('paragraph3')
+
+        # Handle main image
+        if files.get('mainImage'):
+            business.main_image_url = upload_file(files.get('mainImage'))
+        elif data.get('mainImageUrl'):
+            business.main_image_url = data.get('mainImageUrl')
+
+        # Handle additional images
+        for i in range(1, 4):
+            if files.get(f'additionalImage{i}'):
+                setattr(business, f'additional_image_url{i}', 
+                       upload_file(files.get(f'additionalImage{i}')))
+            elif data.get(f'additionalImage{i}Url'):
+                setattr(business, f'additional_image_url{i}', 
+                       data.get(f'additionalImage{i}Url'))
 
         db.session.commit()
-
         return jsonify({
-            'message': 'Business updated successfully!',
+            'message': 'Business updated successfully',
             'business': business.to_dict()
         }), 200
 
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 422
 
 
 
