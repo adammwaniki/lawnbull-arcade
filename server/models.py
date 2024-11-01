@@ -19,7 +19,7 @@ class User(db.Model, SerializerMixin):
     email = Column(String(255))
 
     def __repr__(self):
-        return f'<User (id={self.id}, {self.user_name}, email={self.email})>'
+        return f'<User (id={self.id}, {self.username}, email={self.email})>'
 
 
 class Business(db.Model, SerializerMixin):
