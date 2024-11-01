@@ -48,28 +48,37 @@ export default function AdminDash() {
 
     const handleUpdateBusiness = async (updatedBusiness) => {
         try {
-          const token = localStorage.getItem('accessToken');
-          const response = await fetch(`${import.meta.env.VITE_API_URL}/business/${updatedBusiness.id}`, {
-            method: 'PATCH',  // Changed from PUT to PATCH
-            headers: {
-              'Authorization': `Bearer ${token}`
-            },
-            body: updatedBusiness
-          });
-      
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-      
-          const data = await response.json();
-          setBusinesses(businesses.map(business => 
-            business.id === updatedBusiness.id ? data.business : business
-          ));
+            const token = localStorage.getItem('accessToken');
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/business/${updatedBusiness.id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                body: updatedBusiness
+            });
+    
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+    
+            const data = await response.json();
+            
+            // First update the businesses state
+            setBusinesses(prevBusinesses => 
+                prevBusinesses.map(business => 
+                    business.id === updatedBusiness.id ? data.business : business
+                )
+            );
+            
+            // Then update the selected business with the new data
+            setSelectedBusiness(data.business);
+            
         } catch (error) {
-          console.error('Update error:', error);
-          throw error;
+            console.error('Update error:', error);
+            throw error;
         }
-      };
+    };
+    
       
 
     const handleViewMore = (business) => {
