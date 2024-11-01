@@ -33,6 +33,52 @@ export default function AdminCardsFull({
     }
 };
 
+const handleUpdate = async (editedBusiness) => {
+  const formData = new FormData();
+  
+  // Add text fields
+  formData.append('name', editedBusiness.name);
+  formData.append('subtitle', editedBusiness.subtitle);
+  formData.append('paragraph1', editedBusiness.paragraph1);
+  formData.append('paragraph2', editedBusiness.paragraph2);
+  formData.append('paragraph3', editedBusiness.paragraph3);
+  
+  // Handle file uploads
+  if (editedBusiness.main_image_url instanceof File) {
+    formData.append('mainImage', editedBusiness.main_image_url);
+  }
+  if (editedBusiness.additional_image_url1 instanceof File) {
+    formData.append('additionalImage1', editedBusiness.additional_image_url1);
+  }
+  if (editedBusiness.additional_image_url2 instanceof File) {
+    formData.append('additionalImage2', editedBusiness.additional_image_url2);
+  }
+  if (editedBusiness.additional_image_url3 instanceof File) {
+    formData.append('additionalImage3', editedBusiness.additional_image_url3);
+  }
+
+  try {
+    const token = localStorage.getItem('access_token');
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/business/${editedBusiness.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+      body: formData
+    });
+    
+    if (response.ok) {
+      const result = await response.json();
+      onUpdate(result.business);
+      setIsEditing(false);
+    } else {
+      throw new Error('Failed to update business');
+    }
+  } catch (error) {
+    console.error('Error updating business:', error);
+  }
+};
+
   
 
   const { getRootProps: getMainImageProps, getInputProps: getMainImageInputProps } = useDropzone({
@@ -205,13 +251,10 @@ export default function AdminCardsFull({
           ) : (
             <>
               <button
-                onClick={() => {
-                  onUpdate(editedBusiness);
-                  setIsEditing(false);
-                }}
-                className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-md transition-colors font-semibold"
-              >
-                Save and Update
+                  onClick={() => handleUpdate(editedBusiness)}
+                  className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-md transition-colors font-semibold"
+                >
+                  Save and Update
               </button>
               <button
                 onClick={() => {

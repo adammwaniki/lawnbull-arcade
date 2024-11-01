@@ -106,15 +106,31 @@ def create_business():
 
 
 
-@app.route('/business/<int:id>', methods=['PUT'])
+@app.route('/business/<int:id>', methods=['PATCH'])
 @jwt_required()
 def update_business(id):
     business = Business.query.get_or_404(id)
-    data = request.get_json()
+    data = request.form
+    files = request.files
+    
+    # Handle file uploads if present
+    if files.get('mainImage'):
+        business.main_image_url = upload_file(files.get('mainImage'))
+    if files.get('additionalImage1'):
+        business.additional_image_url1 = upload_file(files.get('additionalImage1'))
+    if files.get('additionalImage2'):
+        business.additional_image_url2 = upload_file(files.get('additionalImage2'))
+    if files.get('additionalImage3'):
+        business.additional_image_url3 = upload_file(files.get('additionalImage3'))
+    
+    # Update text fields
     for key, value in data.items():
-        setattr(business, key, value)
+        if hasattr(business, key):
+            setattr(business, key, value)
+    
     db.session.commit()
-    return jsonify({'message': 'Business has been updated!'}), 200
+    return jsonify({'message': 'Business has been updated!', 'business': business.to_dict()}), 200
+
 
 @app.route('/business/<int:id>', methods=['DELETE'])
 @jwt_required()
