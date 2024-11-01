@@ -43,19 +43,21 @@ const handleUpdate = async (editedBusiness) => {
   formData.append('paragraph2', editedBusiness.paragraph2);
   formData.append('paragraph3', editedBusiness.paragraph3);
   
-  // Handle file uploads
+  // Handle main image
   if (editedBusiness.main_image_url instanceof File) {
     formData.append('mainImage', editedBusiness.main_image_url);
+  } else {
+    formData.append('mainImageUrl', editedBusiness.main_image_url);
   }
-  if (editedBusiness.additional_image_url1 instanceof File) {
-    formData.append('additionalImage1', editedBusiness.additional_image_url1);
-  }
-  if (editedBusiness.additional_image_url2 instanceof File) {
-    formData.append('additionalImage2', editedBusiness.additional_image_url2);
-  }
-  if (editedBusiness.additional_image_url3 instanceof File) {
-    formData.append('additionalImage3', editedBusiness.additional_image_url3);
-  }
+
+  // Handle additional images
+  ['additional_image_url1', 'additional_image_url2', 'additional_image_url3'].forEach((field, index) => {
+    if (editedBusiness[field] instanceof File) {
+      formData.append(`additionalImage${index + 1}`, editedBusiness[field]);
+    } else {
+      formData.append(`additionalImage${index + 1}Url`, editedBusiness[field]);
+    }
+  });
 
   try {
     const token = localStorage.getItem('access_token');
@@ -67,19 +69,14 @@ const handleUpdate = async (editedBusiness) => {
       body: formData
     });
     
-    if (response.ok) {
-      const result = await response.json();
-      onUpdate(result.business);
-      setIsEditing(false);
-    } else {
-      throw new Error('Failed to update business');
-    }
+    const result = await response.json();
+    onUpdate(result.business);
+    setIsEditing(false);
   } catch (error) {
     console.error('Error updating business:', error);
   }
 };
 
-  
 
   const { getRootProps: getMainImageProps, getInputProps: getMainImageInputProps } = useDropzone({
     onDrop: (files) => onDrop(files, 'main_image_url'),

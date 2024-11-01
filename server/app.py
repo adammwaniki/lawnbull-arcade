@@ -109,27 +109,32 @@ def create_business():
 @app.route('/business/<int:id>', methods=['PATCH'])
 @jwt_required()
 def update_business(id):
-    business = Business.query.get_or_404(id)
-    data = request.form
-    files = request.files
-    
-    # Handle file uploads if present
-    if files.get('mainImage'):
-        business.main_image_url = upload_file(files.get('mainImage'))
-    if files.get('additionalImage1'):
-        business.additional_image_url1 = upload_file(files.get('additionalImage1'))
-    if files.get('additionalImage2'):
-        business.additional_image_url2 = upload_file(files.get('additionalImage2'))
-    if files.get('additionalImage3'):
-        business.additional_image_url3 = upload_file(files.get('additionalImage3'))
-    
-    # Update text fields
-    for key, value in data.items():
-        if hasattr(business, key):
-            setattr(business, key, value)
-    
-    db.session.commit()
-    return jsonify({'message': 'Business has been updated!', 'business': business.to_dict()}), 200
+    try:
+        business = Business.query.get_or_404(id)
+        data = request.form
+        files = request.files
+
+        # Update business directly without validation checks
+        business.name = data.get('name', business.name)
+        business.subtitle = data.get('subtitle', business.subtitle)
+        business.paragraph1 = data.get('paragraph1', business.paragraph1)
+        business.paragraph2 = data.get('paragraph2', business.paragraph2)
+        business.paragraph3 = data.get('paragraph3', business.paragraph3)
+        business.main_image_url = upload_file(files.get('mainImage')) or data.get('mainImageUrl', business.main_image_url)
+        business.additional_image_url1 = upload_file(files.get('additionalImage1')) or data.get('additionalImage1Url', business.additional_image_url1)
+        business.additional_image_url2 = upload_file(files.get('additionalImage2')) or data.get('additionalImage2Url', business.additional_image_url2)
+        business.additional_image_url3 = upload_file(files.get('additionalImage3')) or data.get('additionalImage3Url', business.additional_image_url3)
+
+        db.session.commit()
+
+        return jsonify({
+            'message': 'Business updated successfully!',
+            'business': business.to_dict()
+        }), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 
 
 @app.route('/business/<int:id>', methods=['DELETE'])
