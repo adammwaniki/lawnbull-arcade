@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 export default function ClientCardsMini({ main_image_url, name, subtitle, paragraph1 = '', onViewMore }) {
   return (
-    <div className="bg-[#17163e] bg-opacity-90 p-6 rounded-lg shadow-lg max-w-sm mx-auto w-[400px]">
+    <div className="bg-[#17163e] bg-opacity-90 p-6 rounded-lg shadow-lg max-w-sm mx-auto w-full sm:w-[400px]">
       <div className="relative h-[225px] mb-4">
         <img 
           src={main_image_url} 

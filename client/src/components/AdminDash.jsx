@@ -140,7 +140,7 @@ export default function AdminDash() {
     return (
         <div className={`relative min-h-screen  flex flex-col bg-black ${darkMode ? 'dark' : ''}`}>
         {MemoizedParticlesLogin}
-            <main className="bg-[#17163e] dark:bg-[#17163e] bg-opacity-60 dark:bg-opacity-60 p-8 shadow-lg z-10 w-4/5 h-[calc(100vh-3.5rem)] md:h-[calc(100vh-4rem)] 2xl:h-[calc(100vh-2.25rem)] mx-auto overflow-y-auto flex flex-col mb-16">
+            <main className="bg-[#17163e] dark:bg-[#17163e] bg-opacity-60 dark:bg-opacity-60 p-4 md:p-8 shadow-lg z-10 w-11/12 md:w-4/5 h-[calc(100vh-3.5rem)] md:h-[calc(100vh-4rem)] 2xl:h-[calc(100vh-2.25rem)] mx-auto overflow-y-auto flex flex-col mb-16">
                 <h1 className="text-4xl  mb-8 text-white font-arima font-extrabold tracking-wide dark:text-gray-200">Admin Dashboard</h1>
                 
                 <button 
@@ -161,7 +161,7 @@ export default function AdminDash() {
                     
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 ">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full px-2 md:px-0 auto-rows-max">
                     {filteredBusinesses.map(business => (
                         <ClientCardsMini
                         key={business.id}
