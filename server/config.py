@@ -36,10 +36,11 @@ CORS(app,
      origins=["https://lawnbull-arcade.vercel.app", "http://localhost:5173"],
      supports_credentials=True,
      allow_headers=['Content-Type', 'Authorization'],
-     methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+     methods=['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],  # Added PATCH here
      expose_headers=['Access-Control-Allow-Origin'],
      max_age=3600
 )
+
 
 
 
