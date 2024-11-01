@@ -17,21 +17,21 @@ export default function AdminCardsFull({
   const [editedBusiness, setEditedBusiness] = useState(business);
 
   const onDrop = (acceptedFiles, field) => {
-    if (acceptedFiles.length > 0) {
-        setEditedBusiness(prev => ({
-            ...prev,
-            [field]: acceptedFiles[0]
-        }));
-    } else {
-        const url = window.prompt("Enter image URL:");
-        if (url && url.trim()) {
+        if (acceptedFiles.length > 0) {
             setEditedBusiness(prev => ({
                 ...prev,
-                [field]: url.trim()
+                [field]: acceptedFiles[0]
             }));
+        } else {
+            const url = window.prompt("Enter image URL:");
+            if (url && url.trim()) {
+                setEditedBusiness(prev => ({
+                    ...prev,
+                    [field]: url.trim()
+                }));
+            }
         }
-    }
-};
+    };
 
 const handleUpdate = async (editedBusiness) => {
   const formData = new FormData();

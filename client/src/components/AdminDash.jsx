@@ -71,7 +71,6 @@ export default function AdminDash() {
         }
       };
       
-    
 
     const handleViewMore = (business) => {
         const formattedBusiness = {
