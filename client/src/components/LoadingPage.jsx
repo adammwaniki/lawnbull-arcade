@@ -4,9 +4,8 @@ import { loadAll } from "@tsparticles/all";
 import { loadPolygonMaskPlugin } from "@tsparticles/plugin-polygon-mask";
 import PropTypes from 'prop-types';
 
-export default function LoadingPage({ isLoading }) {
+export default function LoadingPage({ isLoading, darkMode, progress }) {
   const [init, setInit] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
     initParticlesEngine(async (engine) => {
@@ -15,22 +14,7 @@ export default function LoadingPage({ isLoading }) {
     }).then(() => {
       setInit(true);
     });
-    
-    // Check initial dark mode preference
-    const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    setDarkMode(prefersDarkMode);
-
-    // Listen for changes in dark mode preference
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleChange = (e) => setDarkMode(e.matches);
-    mediaQuery.addEventListener('change', handleChange);
-
-    return () => {
-      mediaQuery.removeEventListener('change', handleChange);
-    };
   }, []);
-
-  // Removed console.log
 
   const options = useMemo(
     () => ({
@@ -117,8 +101,12 @@ export default function LoadingPage({ isLoading }) {
         },
         scale: 0.5,
         type: "inline",
-        url: "https://particles.js.org/images/smalldeer.svg"
+        url: "https://particles.js.org/images/smalldeer.svg",
+        position: { // Add position configuration
+          x: 50,
+          y: 40 // Adjust to move deer higher
         }
+      }
     }),
     [darkMode]
   );
@@ -139,25 +127,45 @@ export default function LoadingPage({ isLoading }) {
       {init && (
         <Particles
           id="tsparticles"
-          
           options={options}
         />
       )}
       <div style={{
         position: "absolute",
-        top: "50%",
+        top: "80%", // Adjusted from 50% to position below deer
         left: "50%",
         transform: "translate(-50%, -50%)",
-        color: darkMode ? "#ffffff" : "#0d0d0d",
-        fontSize: "24px",
+        textAlign: "center",
         zIndex: 1
       }}>
-        Loading...
+        <div style={{
+          color: darkMode ? "#ffffff" : "#0d0d0d",
+          fontSize: "24px",
+          marginBottom: "1rem"
+        }}>
+          Loading...
+        </div>
+        <div style={{
+          width: "200px",
+          height: "4px",
+          backgroundColor: darkMode ? "#333" : "#eee",
+          borderRadius: "2px",
+          overflow: "hidden"
+        }}>
+          <div style={{
+            width: `${progress}%`,
+            height: "100%",
+            backgroundColor: darkMode ? "#ffffff" : "#000000",
+            transition: "width 0.3s ease-out"
+          }}/>
+        </div>
       </div>
     </div>
-  );  
+  );
 }
 
 LoadingPage.propTypes = {
   isLoading: PropTypes.bool.isRequired,
+  darkMode: PropTypes.bool.isRequired,
+  progress: PropTypes.number.isRequired
 };

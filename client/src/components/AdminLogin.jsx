@@ -1,40 +1,21 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { ParticlesLogin } from "./ParticlesLogin"
 import Navbar from "./Navbar";
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
 import Footer from './Footer';
+import PropTypes from 'prop-types';
 
-export default function AdminLogin() {
+export default function AdminLogin({ darkMode, toggleDarkMode }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [darkMode, setDarkMode] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    setDarkMode(prefersDarkMode);
-
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleChange = (e) => setDarkMode(e.matches);
-    
-    mediaQuery.addEventListener('change', handleChange);
-
-    return () => {
-      mediaQuery.removeEventListener('change', handleChange);
-    };
-  }, []);
-
-  const toggleDarkMode = () => setDarkMode(!darkMode);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
-  
     try {
-      //console.log('API URL:', import.meta.env.VITE_API_URL)
-      //console.log('Login URL:', `${import.meta.env.VITE_API_URL}/login`);
       const response = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
         method: 'POST',
         headers: {
@@ -43,16 +24,15 @@ export default function AdminLogin() {
         body: JSON.stringify({ email: username, password }),
         credentials: 'include'
       });
-  
+
       if (response.ok) {
         const data = await response.json();
         localStorage.setItem('accessToken', data.access_token);
         localStorage.setItem('refreshToken', data.refresh_token);
-        
         localStorage.setItem('username', data.user.username);
         localStorage.setItem('email', data.user.email);
         localStorage.setItem('publicId', data.user.public_id);
-  
+
         const decodedToken = jwtDecode(data.access_token);
         
         if (decodedToken.isAdmin) {
@@ -68,10 +48,8 @@ export default function AdminLogin() {
       console.error(error);
     }
   };
-  
 
   const MemoizedParticlesLogin = useMemo(() => <ParticlesLogin darkMode={darkMode} />, [darkMode]);
-  // By memoizing the ParticlesLogin component, we ensure that it only renders once when the AdminLogin component mounts, and it won't re-render when the input fields change.
 
   return (
     <div className={`relative min-h-screen flex flex-col items-center justify-center bg-black ${darkMode ? 'dark' : ''}`}>
@@ -121,3 +99,8 @@ export default function AdminLogin() {
     </div>
   );
 }
+
+AdminLogin.propTypes = {
+  darkMode: PropTypes.bool.isRequired,
+  toggleDarkMode: PropTypes.func.isRequired
+};

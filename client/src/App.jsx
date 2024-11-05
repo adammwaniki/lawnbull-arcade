@@ -16,6 +16,35 @@ import ProtectedRoute from './components/ProtectedRoute'
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
+  const [darkMode, setDarkMode] = useState(() => {
+    // First check localStorage for user preference
+    const savedPreference = localStorage.getItem('darkMode');
+    if (savedPreference !== null) {
+      return JSON.parse(savedPreference);
+    }
+    // Fall back to system preference if no saved preference exists
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  });
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = (e) => {
+      // Only update if there's no user preference stored
+      if (localStorage.getItem('darkMode') === null) {
+        setDarkMode(e.matches);
+      }
+    };
+    
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+
+  const toggleDarkMode = () => {
+    const newMode = !darkMode;
+    setDarkMode(newMode);
+    // Save user preference to localStorage
+    localStorage.setItem('darkMode', JSON.stringify(newMode));
+  };
 
   useEffect(() => {
     const loadEssentialData = async () => {
@@ -54,24 +83,28 @@ export default function App() {
 
 
   if (isLoading) {
-    return <LoadingPage isLoading={isLoading} progress={loadingProgress} />;
+    return <LoadingPage 
+      isLoading={isLoading} 
+      progress={loadingProgress} 
+      darkMode={darkMode} 
+    />;
   }
+
 
   return (
     <AuthProvider>
       <Router>
-        <div className="App">
+        <div className={`App ${darkMode ? 'dark' : ''}`}>
           <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/marketing" element={<MarketingPage />} />
-            <Route path="/login" element={<AdminLogin />} />
+            <Route path="/" element={<LandingPage darkMode={darkMode} toggleDarkMode={toggleDarkMode} />} />
+            <Route path="/about" element={<AboutPage darkMode={darkMode} toggleDarkMode={toggleDarkMode} />} />
+            <Route path="/marketing" element={<MarketingPage darkMode={darkMode} toggleDarkMode={toggleDarkMode} />} />
+            <Route path="/login" element={<AdminLogin darkMode={darkMode} toggleDarkMode={toggleDarkMode} />} />
             <Route path="/admin/dashboard" element={
-                    <ProtectedRoute>
-                        <AdminDash />
-                    </ProtectedRoute>
-                } 
-            />
+              <ProtectedRoute>
+                <AdminDash darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+              </ProtectedRoute>
+            } />
             <Route path="/admin/new-business" element={
                     <ProtectedRoute>
                         <NewBusinessCard />

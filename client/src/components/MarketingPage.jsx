@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Lottie from "lottie-react";
 import Navbar from "./Navbar";
 import ClientCardsMini from "./cards/ClientCardsMini";
@@ -6,70 +6,52 @@ import ClientCardsFull from "./cards/ClientCardsFull";
 import { dummyCards } from './DummyData';
 import onlineMarketingAnimation from '../assets/online-marketing-animation.json';
 import Footer from './Footer';
+import PropTypes from 'prop-types';
 
-export default function MarketingPage() {
+export default function MarketingPage({ darkMode, toggleDarkMode }) {
   const [cards, setCards] = useState([]);
   const [selectedCard, setSelectedCard] = useState(null);
-  const [darkMode, setDarkMode] = useState(false);
-  
-  const toggleDarkMode = () => setDarkMode(!darkMode);
 
   useEffect(() => {
-    const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    setDarkMode(prefersDarkMode);
-
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleChange = (e) => setDarkMode(e.matches);
-    mediaQuery.addEventListener('change', handleChange);
-
-    // Fetch cards from API
     fetchCards();
-
-    return () => {
-      mediaQuery.removeEventListener('change', handleChange);
-    };
   }, []);
 
-  // Update the fetchCards function to use the API
-const fetchCards = async () => {
-  try {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/businesses`);
-    if (!response.ok) {
-      throw new Error('Failed to fetch businesses');
+  const fetchCards = async () => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/businesses`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch businesses');
+      }
+      const data = await response.json();
+      setCards(data);
+    } catch (error) {
+      console.error('Error fetching businesses:', error);
+      setCards(dummyCards);
     }
-    const data = await response.json();
-    setCards(data);
-  } catch (error) {
-    console.error('Error fetching businesses:', error);
-    // Fallback to dummy data in case of error
-    setCards(dummyCards);
-  }
-};
-
-
-const handleViewMore = (card) => {
-  const business = {
-    main_image_url: card.main_image_url,
-    name: card.name,
-    subtitle: card.subtitle,
-    paragraph1: card.paragraph1,
-    paragraph2: card.paragraph2,
-    paragraph3: card.paragraph3,
-    additional_image_url1: card.additional_image_url1,
-    additional_image_url2: card.additional_image_url2,
-    additional_image_url3: card.additional_image_url3
   };
-  setSelectedCard(business);
-};
 
+  const handleViewMore = (card) => {
+    const business = {
+      main_image_url: card.main_image_url,
+      name: card.name,
+      subtitle: card.subtitle,
+      paragraph1: card.paragraph1,
+      paragraph2: card.paragraph2,
+      paragraph3: card.paragraph3,
+      additional_image_url1: card.additional_image_url1,
+      additional_image_url2: card.additional_image_url2,
+      additional_image_url3: card.additional_image_url3
+    };
+    setSelectedCard(business);
+  };
 
   const handleCloseFullCard = () => {
     setSelectedCard(null);
   };
 
   const MemoizedLottieAnimation = useMemo(() => (
-    <Lottie 
-      animationData={onlineMarketingAnimation} 
+    <Lottie
+      animationData={onlineMarketingAnimation}
       loop={true}
       autoplay={true}
       style={{ width: '100%', height: '100%' }}
@@ -99,12 +81,11 @@ const handleViewMore = (card) => {
             </div>
           </div>
           {selectedCard && (
-            <ClientCardsFull 
-              business={selectedCard} 
-              onClose={handleCloseFullCard} 
+            <ClientCardsFull
+              business={selectedCard}
+              onClose={handleCloseFullCard}
             />
           )}
-
         </div>
         <div className="relative z-10">
           <Footer darkMode={darkMode} />
@@ -113,3 +94,8 @@ const handleViewMore = (card) => {
     </div>
   );
 }
+
+MarketingPage.propTypes = {
+  darkMode: PropTypes.bool.isRequired,
+  toggleDarkMode: PropTypes.func.isRequired
+};
