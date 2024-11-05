@@ -7,13 +7,13 @@ export default function Navbar({ darkMode, toggleDarkMode }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(true);
-    }, 2500);
+    }, 500);
 
     return () => clearTimeout(timer);
   }, []);
 
   return (
-    <div className={`transition-all duration-1000 ease-out transform ${isVisible ? '-translate-x-0' : '-translate-x-[90vw]'} flex lg:h-fit pl-2 pt-2 pb-2 text-lg md:text-[3.5vh] lg:leading-tight font-arima font-extrabold tracking-wide text-white text-center`}>
+    <div className={`transition-all duration-500 ease-out transform ${isVisible ? '-translate-x-0' : '-translate-x-[90vw]'} flex lg:h-fit pl-2 pt-2 pb-2 text-lg md:text-[3.5vh] lg:leading-tight font-arima font-extrabold tracking-wide text-white text-center`}>
       <aside>
         <div className="flex  flex-grow">
           <nav>
