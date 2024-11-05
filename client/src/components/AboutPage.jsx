@@ -10,14 +10,18 @@ export default function AboutPage({ darkMode, toggleDarkMode }) {
 
     return (
         <div className={`relative min-h-screen flex flex-col items-center justify-between ${darkMode ? 'dark' : ''}`}>
-            {MemoizedParticlesLogin}
+            <div className="absolute inset-0">
+                {MemoizedParticlesLogin}
+            </div>
             <div className="mt-8 w-full md:w-1/3 md:fixed md:right-0 md:top-1/2 md:transform md:-translate-y-1/2 flex justify-center md:justify-end z-20">
                 <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
             </div>
-            <main className="w-full max-w-6xl bg-opacity-80 p-4 md:p-8 rounded-lg shadow-lg z-10 flex flex-col justify-between flex-grow">
+            <main className="relative w-full max-w-6xl bg-opacity-80 p-4 md:p-8 rounded-lg shadow-lg z-10 flex flex-col justify-between flex-grow">
                 <div className="flex flex-col md:flex-row md:justify-between md:h-[90vh]">
-                    <div className="flex-1 max-w-md pb-6 pt-6 mt-6 bg-gray-50 bg-opacity-85 dark:bg-black dark:bg-opacity-60 shadow-md rounded-lg p-4 md:p-6 mb-12 md:mb-0 md:mr-4 overflow-auto md:order-1 ">
-                        <h3 className="text-[2rem] lg:text-[2vw] lg:leading-tight text-[#17163e] dark:text-white mb-4 font-playfair-display font-extrabold ">Growing Your Brand, <br/> One Lawn at a Time </h3>
+                    <div className="flex-1 max-w-md pb-6 pt-6 mt-6 bg-gray-50 bg-opacity-85 dark:bg-black dark:bg-opacity-60 shadow-md rounded-lg p-4 md:p-6 mb-12 md:mb-0 md:mr-4 overflow-auto md:order-1">
+                        <h3 className="text-[2rem] lg:text-[2vw] lg:leading-tight text-[#17163e] dark:text-white mb-4 font-playfair-display font-extrabold">
+                            Growing Your Brand, <br/> One Lawn at a Time
+                        </h3>
                         <div className="text-[#17163e] dark:text-white font-medium space-y-5 text-md md:text-[1.05rem]">
                             <p>
                                 At Lawnbull Limited, we specialize in marketing that helps your business thrive.

@@ -20,27 +20,29 @@ export default function LandingPage({ darkMode, toggleDarkMode }) {
 
     return (
         <div className={`relative flex flex-row items-center justify-center min-h-screen min-w-full ${darkMode ? 'dark' : ''}`}>
-            <div className="flex flex-col dark:bg-gray-900">
+            <div className="absolute inset-0">
                 <ParticlesBackground showLightEffect={showLightEffect} darkMode={darkMode} />
-                <div className="lawnbull-intro z-10">
+            </div>
+            <div className="flex flex-col z-10 relative">
+                <div className="lawnbull-intro">
                     <h1 className="text-[6rem] lg:text-[10vw] text-center font-wunderbar dark:text-white">
                         Lawnbull Limited
                     </h1>
                 </div>
-                
-                <Lottie animationData={animationData} 
+                <Lottie 
+                    animationData={animationData}
                     className="h-[40vh]"
                     style={{
                         filter: darkMode ? 'drop-shadow(0px 0px 2px white)' : 'none'
                     }}
                 />
             </div>
-            <div className="absolute right-0">
+            <div className="absolute right-0 z-20">
                 <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
             </div>
             <Footer darkMode={darkMode} />
         </div>
-    )  
+    );
 }
 
 LandingPage.propTypes = {
