@@ -6,7 +6,7 @@ export default function ClientCardsFull({
 }) {
   return (
     <div className="fixed inset-0 flex items-center mt-10 justify-center z-50 bg-black bg-opacity-85" onClick={onClose}>
-      <div className="bg-[#17163e] bg-opacity-80 p-8 rounded-lg shadow-lg w-full h-full md:w-4/5 md:h-4/5 overflow-y-auto relative mb-24 mt-6" onClick={(e) => e.stopPropagation()}>
+      <div className="bg-[#17163e] bg-opacity-80 p-8 pt-14 rounded-lg shadow-lg w-full h-full md:w-4/5 md:h-4/5 overflow-y-auto relative mb-24 " onClick={(e) => e.stopPropagation()}>
         <button 
             onClick={onClose}
             className="absolute top-3 right-4 bg-red-500 text-white flex items-center justify-center rounded-2xl hover:bg-red-600 focus:outline-none px-4 py-2"

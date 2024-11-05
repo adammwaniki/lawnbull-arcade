@@ -7,7 +7,7 @@ export default function ClientCardsMini({ main_image_url, name, subtitle, paragr
         <img 
           src={main_image_url} 
           alt={name} 
-          className="absolute w-full h-full object-cover rounded-md"
+          className="absolute w-full h-full object-cover rounded-md z-10"
         />
       </div>
       <h2 className="text-2xl font-playfair-display font-bold tracking-wide text-[#fff] mb-2">{name}</h2>
