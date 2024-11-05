@@ -163,10 +163,10 @@ export const ParticlesBackground = ({ showLightEffect, darkMode }) => {
             area: {
               gradient: {
                 start: {
-                  value: darkMode ? "#ffff00" : "#ffffff"
+                  value: darkMode ? "#000" : "#ffffff"
                 },
                 stop: {
-                  value: darkMode ? "#ffff00" : "#ffffff"
+                  value: darkMode ? "#000" : "#ffffff"
                 }
               },
               radius: 100
