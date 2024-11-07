@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import * as emailjs from '@emailjs/browser';
 
 const ContactCard = () => {
@@ -7,40 +7,62 @@ const ContactCard = () => {
     businessName: '',
     email: '',
     phone: '',
+    countryCode: '',
     message: ''
   });
 
+  useEffect(() => {
+    emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
+  }, []);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData(prevData => ({
+      ...prevData,
+      [name]: value
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Use EmailJS to send the form data
-    emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
-      from_name: formData.name,
-      business_name: formData.businessName,
-      phone: formData.phone,
-      message: formData.message,
-      reply_to: formData.email, // Optionally include the user's email for replies
-    }, 'YOUR_USER_ID')
+    
+    const templateParams = {
+      to_name: "Lawnbull Admin",
+      from_name: `${formData.name} from ${formData.businessName}`,
+      reply_to: formData.email,
+      message: `Email: ${formData.email}
+    Phone: ${formData.countryCode} ${formData.phone}
+    Message: ${formData.message}`
+    };
+    
+    
+  
+    emailjs.send(
+      import.meta.env.VITE_EMAILJS_SERVICE_ID,
+      import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+      templateParams,
+      import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+    )
     .then((response) => {
-      console.log('SUCCESS!', response.status, response.text);
+      //console.log('SUCCESS!', response.status, response.text);
       alert('Message sent successfully!');
       setFormData({
         name: '',
         businessName: '',
         email: '',
         phone: '',
+        countryCode: '',
         message: ''
       });
-    }, (err) => {
+    })
+    .catch((err) => {
       console.error('FAILED...', err);
       alert('Failed to send message. Please try again later.');
     });
   };
+  
+  
+  
 
   return (
     <div className="max-w-sm mx-auto bg-[#17163e] bg-opacity-80   rounded-lg p-6">
