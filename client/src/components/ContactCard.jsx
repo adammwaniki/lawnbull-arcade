@@ -43,7 +43,7 @@ const ContactCard = () => {
       templateParams,
       import.meta.env.VITE_EMAILJS_PUBLIC_KEY
     )
-    .then((response) => {
+    .then(() => {
       //console.log('SUCCESS!', response.status, response.text);
       alert('Message sent successfully!');
       setFormData({
