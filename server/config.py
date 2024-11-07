@@ -33,7 +33,7 @@ db.init_app(app)
 jwt = JWTManager(app)
 
 CORS(app,
-     origins=["https://lawnbull-arcade.vercel.app", "http://localhost:5173"],
+     origins=["https://lawnbull-arcade.vercel.app", "http://localhost:5173", "https://lawnbull.com"],
      supports_credentials=True,
      allow_headers=['Content-Type', 'Authorization'],
      methods=['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],  # Added PATCH here
