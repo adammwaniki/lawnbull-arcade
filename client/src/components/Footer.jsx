@@ -13,8 +13,8 @@ export default function Footer({ darkMode }) {
       <div>
         Contact us: 
         <FontAwesomeIcon icon={faPhone} style={{color: darkMode ? "#00ff9d" : "#00e09d",}} />
-        <a href="tel:+254722815283" className={`hover:underline hover:text-blue-${darkMode ? '400' : '600'} transition-colors duration-300`}>+254-789-370-012</a> | <FontAwesomeIcon icon={faEnvelopeOpen} style={{color: darkMode ? "#94E0FC" : "#74C0FC",}} />
-        <a href="mailto:kazibest@yahoo.com" className={`hover:underline hover:text-blue-${darkMode ? '400' : '600'} transition-colors duration-300`}>lawnbullltd@gmail.com</a>
+        <a href="tel:+254789370012" className={`hover:underline hover:text-blue-${darkMode ? '400' : '600'} transition-colors duration-300`}>+254-789-370-012</a> | <FontAwesomeIcon icon={faEnvelopeOpen} style={{color: darkMode ? "#94E0FC" : "#74C0FC",}} />
+        <a href="mailto:lawnbullltd@gmail.com" className={`hover:underline hover:text-blue-${darkMode ? '400' : '600'} transition-colors duration-300`}>lawnbullltd@gmail.com</a>
       </div>
       <div>
         <a
