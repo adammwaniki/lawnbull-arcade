@@ -79,6 +79,7 @@ export default function App() {
     return (
         <AuthProvider>
             <div className="app-container" style={{ position: 'relative' }}>
+                {/*
                 {isLoading && (
                     <LoadingPage
                         isLoading={isLoading}
@@ -87,6 +88,7 @@ export default function App() {
                     />
                 )}
                 {!isLoading && (
+            */}
                     <Router>
                         <div className={`App ${darkMode ? 'dark' : ''} relative z-[1] opacity-100 transition-all duration-700 ease-in-out`}>
                             <Routes>
@@ -108,7 +110,7 @@ export default function App() {
                             </Routes>
                         </div>
                     </Router>
-                )}
+                {/* )}  */}
             </div>
         </AuthProvider>
     )
