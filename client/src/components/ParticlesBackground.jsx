@@ -74,7 +74,7 @@ export const ParticlesBackground = ({ showLightEffect, darkMode }) => {
             type: "circle"
           },
           onHover: {
-            enable: showLightEffect,
+            enable: false,
             mode: "light",
             parallax: {
               enable: false,
